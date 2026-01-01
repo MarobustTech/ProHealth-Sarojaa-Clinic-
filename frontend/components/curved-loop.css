@@ -1,0 +1,51 @@
+.curved-loop-jacket {
+  /* Reduced min-height from 150px to 100px for more compact vertical spacing */
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  overflow: hidden;
+}
+
+.curved-loop-svg {
+  /* Critical rendering properties for crystal clear text */
+  user-select: none;
+  width: 100%;
+  /* Adjusted aspect ratio from 100/12 to 100/10 for less vertical height */
+  aspect-ratio: 100 / 11;
+  overflow: visible;
+  display: block;
+  /* Reduced font size from 7rem to 4.5rem for better proportions */
+  font-size: 4.5rem;
+  /* Bright cyan color matching reference image exactly */
+  fill: #0ea5e9;
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 1;
+  /* Essential anti-aliasing settings for sharp text */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-smooth: never;
+}
+
+/* Additional text optimization for pixel-perfect clarity */
+.curved-loop-svg text {
+  shape-rendering: geometricPrecision;
+  text-rendering: geometricPrecision;
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 768px) {
+  .curved-loop-svg {
+    /* Reduced from 3.5rem to 2.5rem for mobile */
+    font-size: 2.5rem;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .curved-loop-svg {
+    /* Reduced from 5rem to 3.5rem for tablets */
+    font-size: 3.5rem;
+  }
+}
