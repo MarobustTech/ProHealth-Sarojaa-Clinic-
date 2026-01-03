@@ -136,7 +136,6 @@ Hospital_Sys/
 │   │   └── auth.py          # Authentication logic
 │   ├── main.py              # FastAPI application
 │   ├── setup_db.py          # Database setup script
-│   ├── migrate_doctors_schema.py  # Migration script
 │   └── requirements.txt     # Python dependencies
 │
 ├── frontend/
@@ -151,52 +150,6 @@ Hospital_Sys/
 └── README.md
 ```
 
-## 🔐 Default Admin Credentials
-
-After running `setup_db.py`, you can login with:
-
-- **Email**: `admin@hospital.com`
-- **Password**: `admin123`
-
-**⚠️ Change these credentials in production!**
-
-## 📝 API Endpoints
-
-### Admin
-- `POST /api/admin/register` - Register new admin
-- `POST /api/admin/login` - Admin login
-- `GET /api/admin/stats` - Dashboard statistics
-
-### Doctors
-- `GET /api/doctors` - Get all doctors
-- `POST /api/doctors` - Create doctor (requires: name, qualification, specialization)
-- `PUT /api/doctors/{id}` - Update doctor
-- `DELETE /api/doctors/{id}` - Delete doctor
-- `PATCH /api/doctors/{id}/toggle-active` - Toggle doctor status
-
-### Specializations
-- `GET /api/specializations` - Get all specializations
-- `GET /api/specializations/active` - Get active specializations
-- `POST /api/specializations` - Create specialization
-- `PUT /api/specializations/{id}` - Update specialization
-- `DELETE /api/specializations/{id}` - Delete specialization
-- `PATCH /api/specializations/{id}/toggle-active` - Toggle status
-
-### Patients
-- `GET /api/patients` - Get all patients
-- `GET /api/patients/{id}` - Get patient details
-
-### Appointments
-- `GET /api/appointments` - Get all appointments
-- `POST /api/appointments` - Create appointment
-- `PATCH /api/appointments/{id}/status` - Update appointment status
-
-### Banners
-- `GET /api/banners` - Get all banners
-- `POST /api/banners` - Create banner
-- `PUT /api/banners/{id}` - Update banner
-- `DELETE /api/banners/{id}` - Delete banner
-- `PATCH /api/banners/{id}/toggle-active` - Toggle banner status
 
 ## 🧪 Testing
 
@@ -230,25 +183,121 @@ This will check:
 
 ## 🚀 Deployment
 
-### Backend (Production)
+### Option 1: Deploy to Railway (Backend) + Vercel (Frontend)
 
-```bash
-# Use production ASGI server
-pip install gunicorn uvicorn[standard]
+#### Backend Deployment (Railway)
 
-# Run with gunicorn
-gunicorn main:app -w 4 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
+1. **Create Railway Account**
+   - Go to [Railway.app](https://railway.app)
+   - Sign up with GitHub
+
+2. **Create New Project**
+   - Click "New Project"
+   - Select "Deploy from GitHub repo"
+   - Choose `MarobustTech/ProHealth-Sarojaa-Clinic-`
+   - Select the `backend` directory
+
+3. **Add PostgreSQL Database**
+   - In your project, click "New"
+   - Select "Database" → "PostgreSQL"
+   - Railway will automatically provision a database
+
+4. **Configure Environment Variables**
+   - Go to your backend service → "Variables"
+   - Add the following:
+     ```
+     DATABASE_URL=${{Postgres.DATABASE_URL}}
+     SECRET_KEY=<generate-a-secure-random-string>
+     ENVIRONMENT=production
+     ```
+
+5. **Deploy**
+   - Railway will automatically deploy
+   - Note your backend URL: `https://your-app.railway.app`
+
+#### Frontend Deployment (Vercel)
+
+1. **Create Vercel Account**
+   - Go to [Vercel.com](https://vercel.com)
+   - Sign up with GitHub
+
+2. **Import Project**
+   - Click "Add New" → "Project"
+   - Import `MarobustTech/ProHealth-Sarojaa-Clinic-`
+   - Set **Root Directory** to `frontend`
+
+3. **Configure Environment Variables**
+   - Add environment variable:
+     ```
+     NEXT_PUBLIC_API_URL=https://your-backend-url.railway.app
+     ```
+
+4. **Deploy**
+   - Click "Deploy"
+   - Vercel will build and deploy automatically
+   - Your app will be live at: `https://your-app.vercel.app`
+
+5. **Update Backend CORS**
+   - Go back to Railway backend
+   - Update `main.py` CORS to include your Vercel URL:
+     ```python
+     allow_origins=["https://your-app.vercel.app"]
+     ```
+   - Commit and push changes
+
+### Option 2: Deploy to Render (All-in-One)
+
+1. **Create Render Account**
+   - Go to [Render.com](https://render.com)
+   - Sign up with GitHub
+
+2. **Deploy Backend**
+   - New → Web Service
+   - Connect GitHub repo
+   - Root Directory: `backend`
+   - Build Command: `pip install -r requirements.txt`
+   - Start Command: `uvicorn main:app --host 0.0.0.0 --port $PORT`
+
+3. **Add PostgreSQL**
+   - New → PostgreSQL
+   - Copy the Internal Database URL
+
+4. **Set Environment Variables**
+   - Add `DATABASE_URL` with the PostgreSQL URL
+   - Add `SECRET_KEY`
+
+5. **Deploy Frontend**
+   - New → Static Site
+   - Root Directory: `frontend`
+   - Build Command: `npm install && npm run build`
+   - Publish Directory: `.next`
+
+### Production Checklist
+
+- [ ] Backend deployed and accessible
+- [ ] Database connected and tables created
+- [ ] Frontend deployed and accessible
+- [ ] Environment variables configured
+- [ ] CORS updated with production URLs
+- [ ] Test appointment booking flow
+- [ ] Test admin dashboard access
+
+### Post-Deployment
+
+**Update CORS for Security**
+After deployment, update `backend/main.py`:
+```python
+allow_origins=[
+    "https://your-production-frontend.vercel.app",
+    "https://your-custom-domain.com"  # if applicable
+]
 ```
 
-### Frontend (Production)
+**Access Your Application**
+- Frontend: `https://your-app.vercel.app`
+- Backend API: `https://your-backend.railway.app`
+- API Docs: `https://your-backend.railway.app/docs`
 
-```bash
-# Build for production
-npm run build
-
-# Start production server
-npm start
-```
 
 ## 📄 License
 
