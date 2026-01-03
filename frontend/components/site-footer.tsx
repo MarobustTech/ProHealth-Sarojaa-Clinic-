@@ -16,7 +16,7 @@ export function SiteFooter() {
               </span>
             </Link>
             <p className="text-sm text-gray-600 leading-relaxed">
-              Providing quality healthcare services with compassion and excellence since 2005.
+              Providing quality dental care services with compassion and excellence since 2005.
             </p>
           </div>
 
@@ -76,11 +76,6 @@ export function SiteFooter() {
               <li>Monday - Friday: 8:00 AM - 8:00 PM</li>
               <li>Saturday: 9:00 AM - 5:00 PM</li>
               <li>Sunday: Closed</li>
-              <li className="pt-2">
-                <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r from-red-500 to-orange-500 text-white">
-                  Emergency: 24/7
-                </span>
-              </li>
             </ul>
           </div>
         </div>
@@ -91,7 +86,7 @@ export function SiteFooter() {
             <span className="font-semibold bg-gradient-to-r from-blue-600 via-cyan-500 to-teal-400 bg-clip-text text-transparent">
               ProHealth
             </span>{" "}
-            Hospital. All rights reserved.
+            Dental Clinic. All rights reserved.
           </p>
         </div>
       </div>

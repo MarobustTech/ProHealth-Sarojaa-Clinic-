@@ -36,7 +36,7 @@ async function getBanners() {
 
 export default async function HomePage() {
   const banners = await getBanners()
-  
+
   return (
     <div className="min-h-screen">
       <SiteHeader />
@@ -64,29 +64,29 @@ export default async function HomePage() {
               </div>
 
               <h1 className="text-6xl lg:text-7xl font-bold tracking-tight text-balance leading-[1.1]">
-                Your Health,{" "}
+                Your Smile,{" "}
                 <span className="bg-gradient-to-r from-blue-600 via-cyan-500 to-teal-400 bg-clip-text text-transparent">
                   Our Priority
                 </span>
               </h1>
 
               <p className="text-xl text-gray-600 max-w-xl text-pretty leading-relaxed">
-                Experience world-class healthcare with our team of expert doctors and state-of-the-art facilities.
-                Quality care, personalized attention, exceptional results.
+                Experience world-class dental care with our team of expert dentists and state-of-the-art facilities.
+                Quality treatment, personalized attention, beautiful smiles.
               </p>
 
               <div className="flex flex-wrap gap-3">
                 <div className="flex items-center gap-2 px-4 py-2.5 bg-white rounded-xl shadow-md border border-gray-100">
-                  <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                  <span className="text-sm font-medium text-gray-700">24/7 Emergency Care</span>
-                </div>
-                <div className="flex items-center gap-2 px-4 py-2.5 bg-white rounded-xl shadow-md border border-gray-100">
                   <CheckCircle2 className="w-4 h-4 text-blue-600" />
-                  <span className="text-sm font-medium text-gray-700">50+ Specialist Doctors</span>
+                  <span className="text-sm font-medium text-gray-700">12+ Dental Specialists</span>
                 </div>
                 <div className="flex items-center gap-2 px-4 py-2.5 bg-white rounded-xl shadow-md border border-gray-100">
                   <Award className="w-4 h-4 text-amber-500" />
-                  <span className="text-sm font-medium text-gray-700">Award Winning Care</span>
+                  <span className="text-sm font-medium text-gray-700">Award Winning Dental Care</span>
+                </div>
+                <div className="flex items-center gap-2 px-4 py-2.5 bg-white rounded-xl shadow-md border border-gray-100">
+                  <Shield className="w-4 h-4 text-green-600" />
+                  <span className="text-sm font-medium text-gray-700">Advanced Technology</span>
                 </div>
               </div>
 
@@ -115,15 +115,15 @@ export default async function HomePage() {
               <div className="grid grid-cols-3 gap-6 pt-8">
                 <div className="text-center">
                   <div className="text-3xl font-bold bg-gradient-to-r from-blue-600 via-cyan-500 to-teal-400 bg-clip-text text-transparent mb-1">
-                    150K+
+                    50K+
                   </div>
-                  <div className="text-sm text-gray-600">Happy Patients</div>
+                  <div className="text-sm text-gray-600">Happy Smiles</div>
                 </div>
                 <div className="text-center border-x border-gray-200">
                   <div className="text-3xl font-bold bg-gradient-to-r from-blue-600 via-cyan-500 to-teal-400 bg-clip-text text-transparent mb-1">
-                    50+
+                    12+
                   </div>
-                  <div className="text-sm text-gray-600">Expert Doctors</div>
+                  <div className="text-sm text-gray-600">Dental Specialists</div>
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold bg-gradient-to-r from-blue-600 via-cyan-500 to-teal-400 bg-clip-text text-transparent mb-1">
@@ -151,9 +151,9 @@ export default async function HomePage() {
                   </div>
                   <div>
                     <div className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
-                      150K+
+                      50K+
                     </div>
-                    <div className="text-sm text-gray-600 font-medium">Patients Served</div>
+                    <div className="text-sm text-gray-600 font-medium">Happy Smiles</div>
                   </div>
                 </div>
               </Card>
@@ -179,7 +179,7 @@ export default async function HomePage() {
 
       <section className="relative bg-white py-8">
         <CurvedLoop
-          marqueeText="Expert Care • Modern Facilities • Your Health • Our Priority"
+          marqueeText="Expert Dental Care • Modern Facilities • Your Smile • Our Priority"
           speed={1.5}
           curveAmount={150}
           className="fill-[#0ea5e9]"
@@ -196,13 +196,13 @@ export default async function HomePage() {
               </span>
             </div>
             <h2 className="text-5xl font-bold mb-6 text-balance">
-              Healthcare That{" "}
+              Dental Care That{" "}
               <span className="bg-gradient-to-r from-blue-600 via-cyan-500 to-teal-400 bg-clip-text text-transparent">
                 Puts You First
               </span>
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto text-pretty leading-relaxed">
-              Comprehensive medical services with cutting-edge technology and compassionate care
+              Comprehensive dental services with cutting-edge technology and compassionate care
             </p>
           </div>
 
@@ -233,10 +233,10 @@ export default async function HomePage() {
                 <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-teal-600 via-emerald-500 to-green-400 flex items-center justify-center mb-6 shadow-lg shadow-teal-500/30 group-hover:scale-110 transition-transform">
                   <Stethoscope className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-2xl font-bold mb-3 text-gray-900">Expert Specialists</h3>
+                <h3 className="text-2xl font-bold mb-3 text-gray-900">Expert Dentists</h3>
                 <p className="text-gray-600 leading-relaxed mb-4">
-                  Our team of highly qualified specialists brings decades of experience across all medical fields to
-                  serve you better.
+                  Our team of highly qualified dental specialists brings decades of experience in orthodontics,
+                  endodontics, prosthodontics, and more.
                 </p>
                 <Link
                   href="/services"
@@ -251,17 +251,17 @@ export default async function HomePage() {
               <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-purple-100 to-pink-100 rounded-full blur-3xl opacity-50" />
               <div className="relative">
                 <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-600 via-pink-500 to-rose-400 flex items-center justify-center mb-6 shadow-lg shadow-purple-500/30 group-hover:scale-110 transition-transform">
-                  <Clock className="w-8 h-8 text-white" />
+                  <Shield className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-2xl font-bold mb-3 text-gray-900">24/7 Emergency</h3>
+                <h3 className="text-2xl font-bold mb-3 text-gray-900">Painless Treatments</h3>
                 <p className="text-gray-600 leading-relaxed mb-4">
-                  Round-the-clock emergency services with rapid response team. We're always here when you need us most.
+                  Advanced pain management techniques and gentle care to ensure your comfort throughout every procedure.
                 </p>
                 <Link
-                  href="/contact"
+                  href="/services"
                   className="inline-flex items-center gap-2 text-purple-600 font-semibold hover:gap-3 transition-all"
                 >
-                  Contact Us <ArrowRight className="w-4 h-4" />
+                  Our Treatments <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
             </Card>
@@ -274,8 +274,8 @@ export default async function HomePage() {
                 </div>
                 <h3 className="text-2xl font-bold mb-3 text-gray-900">Advanced Technology</h3>
                 <p className="text-gray-600 leading-relaxed mb-4">
-                  State-of-the-art medical equipment and innovative treatment approaches for accurate diagnosis and
-                  care.
+                  State-of-the-art dental equipment including digital X-rays, 3D imaging, and laser dentistry for
+                  precise treatments.
                 </p>
                 <Link
                   href="/services"
@@ -337,11 +337,11 @@ export default async function HomePage() {
         <div className="container mx-auto max-w-4xl text-center relative z-10">
           <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/20 backdrop-blur-sm rounded-full mb-6">
             <Sparkles className="w-4 h-4" />
-            <span className="text-sm font-semibold">Start Your Healthcare Journey</span>
+            <span className="text-sm font-semibold">Start Your Smile Journey</span>
           </div>
-          <h2 className="text-5xl font-bold mb-6 text-balance">Ready to Experience Better Healthcare?</h2>
+          <h2 className="text-5xl font-bold mb-6 text-balance">Ready to Experience Better Dental Care?</h2>
           <p className="text-xl mb-10 opacity-90 max-w-2xl mx-auto text-pretty leading-relaxed">
-            Book your appointment today and take the first step towards a healthier, happier you
+            Book your appointment today and take the first step towards a healthier, brighter smile
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <Button
