@@ -15,7 +15,10 @@ app = FastAPI(title="Hospital Management System API", version="1.0.0")
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Will be updated with specific production URL after deployment
+    allow_origins=[
+        "https://pro-health-sarojaa-clinic.vercel.app",
+        "http://localhost:3000",  # For local development
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
