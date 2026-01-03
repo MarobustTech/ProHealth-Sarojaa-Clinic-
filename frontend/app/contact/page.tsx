@@ -43,7 +43,10 @@ export default function ContactPage() {
                 <p className="text-muted-foreground mb-4 leading-relaxed">
                   Call us during business hours for appointments and inquiries
                 </p>
-                <p className="text-2xl font-bold text-primary">(555) 123-4567</p>
+                <div className="space-y-2">
+                  <p className="text-xl font-bold text-primary">0427 2313339</p>
+                  <p className="text-xl font-bold text-primary">8946088182</p>
+                </div>
               </div>
             </Card>
 
@@ -57,7 +60,7 @@ export default function ContactPage() {
                 <p className="text-muted-foreground mb-4 leading-relaxed">
                   Send us an email and we'll respond within 24 hours
                 </p>
-                <p className="text-2xl font-bold text-primary">info@prohealth.com</p>
+                <p className="text-lg font-medium text-primary">Contact us via phone for inquiries</p>
               </div>
             </Card>
 
@@ -68,11 +71,15 @@ export default function ContactPage() {
                   <MapPin className="w-7 h-7 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold mb-3 group-hover:text-primary transition-colors">Address</h3>
-                <p className="text-muted-foreground mb-4 leading-relaxed">Visit us at our main hospital location</p>
+                <p className="text-muted-foreground mb-4 leading-relaxed">Visit us at our clinic location</p>
                 <p className="text-lg font-medium">
-                  123 Healthcare Avenue
+                  SREE SAROJAA MULTI SPECIALTY DENTAL CLINIC
                   <br />
-                  Medical District, MD 12345
+                  NEAR VINCENT BUS STOP,
+                  <br />
+                  CHERRY ROAD, KUMARASWAMYPATTI
+                  <br />
+                  SALEM - 636007
                 </p>
               </div>
             </Card>
@@ -104,24 +111,33 @@ export default function ContactPage() {
               <h2 className="text-3xl font-bold">Find Us Here</h2>
             </div>
             <p className="text-muted-foreground mb-6 leading-relaxed">
-              Visit our main hospital facility at 123 Healthcare Avenue, Medical District, MD 12345
+              Visit our clinic at SREE SAROJAA MULTI SPECIALTY DENTAL CLINIC, Near Vincent Bus Stop, Cherry Road, Kumaraswamypatti, Salem - 636007
             </p>
             <div className="w-full h-96 rounded-xl overflow-hidden border-2 border-gray-200 shadow-inner">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.2412648718453!2d-73.98823492346069!3d40.74844097138558!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9b3117469%3A0xd134e199a405a163!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1703001234567!5m2!1sen!2sus"
+                src="https://www.google.com/maps?q=SREE+SAROJAA+MULTI+SPECIALTY+DENTAL+CLINIC,+Cherry+Road,+Kumaraswamypatti,+Salem,+Tamil+Nadu+636007&output=embed"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="Hospital Location"
+                title="SREE SAROJAA MULTI SPECIALTY DENTAL CLINIC Location"
               />
             </div>
             <div className="mt-6 p-4 bg-blue-50 rounded-lg">
               <p className="text-sm text-muted-foreground">
-                <strong className="text-foreground">Getting Here:</strong> Free parking available on-site. Public
-                transportation accessible via Metro Line 2 and Bus Routes 14, 22, 45.
+                <strong className="text-foreground">Getting Here:</strong> Located near Vincent Bus Stop on Cherry Road, Kumaraswamypatti, Salem. Easily accessible by public transport.
+              </p>
+              <p className="text-sm text-muted-foreground mt-2">
+                <a 
+                  href="https://maps.app.goo.gl/kSZG5kJjMN8XUCsR7" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline"
+                >
+                  View on Google Maps →
+                </a>
               </p>
             </div>
           </Card>

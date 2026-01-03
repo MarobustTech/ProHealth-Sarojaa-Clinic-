@@ -15,8 +15,8 @@ def doctor_to_response(doctor: Doctor) -> dict:
         "_id": str(doctor.id),  # Support both id and _id for frontend compatibility
         "name": doctor.name,
         "specialization": doctor.specialization,
-        "email": doctor.email,
-        "phone": doctor.phone,
+        "email": doctor.email if doctor.email else None,  # Ensure None is returned, not empty string
+        "phone": doctor.phone if doctor.phone else None,
         "experience": doctor.experience,
         "qualification": doctor.qualification,
         "consultationFee": doctor.consultation_fee,
@@ -27,7 +27,7 @@ def doctor_to_response(doctor: Doctor) -> dict:
         "image": doctor.image,
         "profilePicture": doctor.image,  # Alias for frontend compatibility
         "isActive": doctor.is_active,
-        "createdAt": doctor.created_at
+        "createdAt": doctor.created_at.isoformat() if doctor.created_at else None
     }
 
 @router.get("", response_model=List[DoctorResponse])
@@ -38,16 +38,24 @@ async def get_doctors(
     specialization: Optional[str] = Query(None),
     db: Session = Depends(get_db)
 ):
-    query = db.query(Doctor)
-    
-    if status == "active" or active_only:
-        query = query.filter(Doctor.is_active == True)
-    
-    if specialization:
-        query = query.filter(Doctor.specialization == specialization)
-    
-    doctors = query.all()
-    return [doctor_to_response(doc) for doc in doctors]
+    try:
+        query = db.query(Doctor)
+        
+        if status == "active" or active_only:
+            query = query.filter(Doctor.is_active == True)
+        
+        if specialization:
+            query = query.filter(Doctor.specialization == specialization)
+        
+        doctors = query.all()
+        result = [doctor_to_response(doc) for doc in doctors]
+        return result
+    except Exception as e:
+        import traceback
+        error_details = traceback.format_exc()
+        print(f"Error in get_doctors: {e}")
+        print(error_details)
+        raise HTTPException(status_code=500, detail=f"Error fetching doctors: {str(e)}")
 
 @router.get("/{doctor_id}", response_model=DoctorResponse)
 async def get_doctor(doctor_id: int, db: Session = Depends(get_db)):

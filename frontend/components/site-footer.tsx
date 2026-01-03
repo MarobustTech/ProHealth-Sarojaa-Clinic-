@@ -52,18 +52,20 @@ export function SiteFooter() {
               <li className="flex items-start gap-2 text-gray-600">
                 <MapPin className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
                 <span>
-                  123 Healthcare Avenue
+                  SREE SAROJAA MULTI SPECIALTY DENTAL CLINIC
                   <br />
-                  Medical District, MD 12345
+                  Near Vincent Bus Stop, Cherry Road
+                  <br />
+                  Kumaraswamypatti, Salem - 636007
                 </span>
               </li>
               <li className="flex items-center gap-2 text-gray-600">
                 <Phone className="w-4 h-4 text-blue-600 flex-shrink-0" />
-                <span>(555) 123-4567</span>
+                <span>0427 2313339 / 8946088182</span>
               </li>
               <li className="flex items-center gap-2 text-gray-600">
                 <Mail className="w-4 h-4 text-blue-600 flex-shrink-0" />
-                <span>info@prohealth.com</span>
+                <span>Contact via phone</span>
               </li>
             </ul>
           </div>

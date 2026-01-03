@@ -1,8 +1,7 @@
-import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { Heart, Users, Award, Building2, Stethoscope, Shield, Clock, Target } from "lucide-react"
+import { Heart, Users, Award, Building2, Stethoscope, Shield, Clock, Target, Smile, Sparkles } from "lucide-react"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 
@@ -19,14 +18,13 @@ export default function AboutPage() {
 
         <div className="container mx-auto max-w-5xl text-center relative z-10">
           <div className="inline-block px-4 py-2 mb-6 rounded-full bg-primary/10 text-primary text-sm font-semibold">
-            About ProHealth Hospital
+            About Sree Sarojaa Multi Specialty Dental Clinic
           </div>
           <h1 className="text-6xl md:text-7xl font-bold mb-6 text-balance bg-gradient-to-r from-slate-900 via-blue-900 to-slate-900 bg-clip-text text-transparent">
-            Caring for Your Health Since 1985
+            Trusted Dental Care Since 1998
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto text-pretty leading-relaxed">
-            A leading healthcare institution committed to delivering exceptional medical care with compassion and
-            excellence
+            A trusted name in comprehensive dental care in Salem for over two decades, delivering high-quality, ethical, and patient-focused dental treatments
           </p>
         </div>
       </section>
@@ -34,171 +32,166 @@ export default function AboutPage() {
       {/* Our Story */}
       <section className="py-20 px-6 bg-white">
         <div className="container mx-auto max-w-7xl">
-          <div className="grid md:grid-cols-2 gap-12 items-center mb-20">
-            <div>
-              <div className="inline-block px-4 py-2 mb-6 rounded-full bg-blue-100 text-blue-600 text-sm font-semibold">
-                Our Story
-              </div>
-              <h2 className="text-5xl font-bold mb-6 text-balance">Building Trust Through Quality Healthcare</h2>
-              <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-                Founded in 1985, ProHealth Hospital has been at the forefront of providing exceptional medical care to
-                our community for over three decades. What started as a small community clinic has grown into a
-                comprehensive healthcare facility serving thousands of patients annually.
-              </p>
-              <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-                Our commitment to medical excellence, patient-centered care, and continuous innovation has made us a
-                trusted name in healthcare. We combine cutting-edge medical technology with compassionate care to ensure
-                the best possible outcomes for our patients.
-              </p>
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                Today, ProHealth Hospital stands as a beacon of hope and healing, with a team of over 200 dedicated
-                healthcare professionals working tirelessly to improve the lives of those we serve.
-              </p>
-            </div>
-            <div className="relative">
-              <div className="absolute -inset-4 bg-gradient-to-br from-blue-400 to-cyan-400 rounded-3xl blur-xl opacity-20" />
-              <Image
-                src="/modern-hospital-building-exterior-professional-pho.jpg"
-                alt="ProHealth Hospital Building"
-                width={600}
-                height={600}
-                className="relative rounded-2xl shadow-2xl border-4 border-white"
-              />
-            </div>
-          </div>
-
-          {/* Values Grid */}
           <div className="mb-20">
-            <div className="text-center mb-12">
-              <h2 className="text-5xl font-bold mb-4">Our Core Values</h2>
-              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                The principles that guide every decision we make and every patient we serve
-              </p>
+            <div className="inline-block px-4 py-2 mb-6 rounded-full bg-blue-100 text-blue-600 text-sm font-semibold">
+              Our Story
             </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <Card className="group p-8 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 hover:border-blue-200 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 opacity-50 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="relative z-10">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                    <Heart className="w-7 h-7 text-white" />
-                  </div>
-                  <h3 className="text-2xl font-bold mb-3">Compassion</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Treating every patient with kindness, empathy, and respect
-                  </p>
-                </div>
-              </Card>
-
-              <Card className="group p-8 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 hover:border-teal-200 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-teal-500/10 to-emerald-500/10 opacity-50 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="relative z-10">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-teal-500 to-emerald-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                    <Award className="w-7 h-7 text-white" />
-                  </div>
-                  <h3 className="text-2xl font-bold mb-3">Excellence</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Delivering the highest quality medical care and services
-                  </p>
-                </div>
-              </Card>
-
-              <Card className="group p-8 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 hover:border-purple-200 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-pink-500/10 opacity-50 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="relative z-10">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                    <Shield className="w-7 h-7 text-white" />
-                  </div>
-                  <h3 className="text-2xl font-bold mb-3">Integrity</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Upholding ethical standards in all our practices
-                  </p>
-                </div>
-              </Card>
-
-              <Card className="group p-8 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 hover:border-orange-200 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-amber-500/10 opacity-50 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="relative z-10">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                    <Target className="w-7 h-7 text-white" />
-                  </div>
-                  <h3 className="text-2xl font-bold mb-3">Innovation</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Embracing new technologies and treatment methods
-                  </p>
-                </div>
-              </Card>
-            </div>
+            <h2 className="text-5xl font-bold mb-6 text-balance">Sree Sarojaa Multi Specialty Dental Clinic – Since 1998</h2>
+            <p className="text-lg text-muted-foreground leading-relaxed mb-6">
+              Established in 1998, Sree Sarojaa Multi Specialty Dental Clinic has been a trusted name in comprehensive dental care in Salem for over two decades. Located at the heart of the city near Vincent Bus Stop, Cherry Road, Kumaraswamypatti, our clinic has been dedicated to delivering high-quality, ethical, and patient-focused dental treatments.
+            </p>
+            <p className="text-lg text-muted-foreground leading-relaxed mb-6">
+              With a strong foundation built on experience, innovation, and compassion, we have successfully treated thousands of patients and families, helping them achieve healthy, confident smiles. Our long-standing presence is a reflection of the trust and satisfaction of our patients across generations.
+            </p>
           </div>
 
-          {/* Stats Section */}
+          {/* Our Philosophy */}
           <div className="mb-20">
-            <Card className="p-12 bg-gradient-to-br from-blue-600 via-cyan-600 to-blue-700 text-white relative overflow-hidden border-0 shadow-2xl">
-              <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
-              <div className="absolute bottom-0 left-0 w-96 h-96 bg-cyan-300/10 rounded-full blur-3xl" />
-
-              <div className="relative z-10">
-                <h2 className="text-4xl font-bold mb-12 text-center">ProHealth by the Numbers</h2>
-                <div className="grid md:grid-cols-4 gap-8">
-                  <div className="text-center">
-                    <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-sm mx-auto mb-4">
-                      <Users className="w-8 h-8" />
-                    </div>
-                    <div className="text-5xl font-bold mb-2">200+</div>
-                    <div className="text-lg opacity-90">Healthcare Professionals</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-sm mx-auto mb-4">
-                      <Stethoscope className="w-8 h-8" />
-                    </div>
-                    <div className="text-5xl font-bold mb-2">50K+</div>
-                    <div className="text-lg opacity-90">Patients Treated Annually</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-sm mx-auto mb-4">
-                      <Building2 className="w-8 h-8" />
-                    </div>
-                    <div className="text-5xl font-bold mb-2">38+</div>
-                    <div className="text-lg opacity-90">Years of Service</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-sm mx-auto mb-4">
-                      <Clock className="w-8 h-8" />
-                    </div>
-                    <div className="text-5xl font-bold mb-2">24/7</div>
-                    <div className="text-lg opacity-90">Emergency Care Available</div>
-                  </div>
-                </div>
-              </div>
-            </Card>
+            <h2 className="text-4xl font-bold mb-6">Our Philosophy</h2>
+            <p className="text-lg text-muted-foreground leading-relaxed mb-6">
+              At Sree Sarojaa Multi Specialty Dental Clinic, we believe that every smile deserves expert care. Our approach combines:
+            </p>
+            <ul className="list-disc list-inside space-y-3 text-lg text-muted-foreground mb-6 ml-4">
+              <li>Advanced dental technology</li>
+              <li>Evidence-based treatment protocols</li>
+              <li>Personalized patient care</li>
+              <li>Strict sterilization and safety standards</li>
+            </ul>
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              We focus not just on treatment, but also on education, prevention, and long-term oral health.
+            </p>
           </div>
 
-          {/* Mission & Vision */}
-          <div className="grid md:grid-cols-2 gap-8">
-            <Card className="p-10 hover:shadow-2xl transition-all duration-300 border-2 hover:border-blue-200">
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center mb-6 shadow-lg">
-                <Target className="w-7 h-7 text-white" />
+          {/* Expert Team */}
+          <div className="mb-20">
+            <h2 className="text-4xl font-bold mb-6">Expert Team of Specialists</h2>
+            <p className="text-lg text-muted-foreground leading-relaxed mb-6">
+              Our clinic is proud to have a team of 12 highly qualified and experienced dental professionals, each specializing in different branches of dentistry. This multi-specialty approach allows us to provide complete dental solutions under one roof.
+            </p>
+            <h3 className="text-3xl font-bold mb-6">Our Doctors</h3>
+            <div className="grid md:grid-cols-2 gap-4 mb-8">
+              <div className="p-4 bg-blue-50 rounded-lg">
+                <p className="font-semibold text-lg">Dr. K.P. Senthamarai Kannan</p>
+                <p className="text-muted-foreground">MDS (Orthodontist), FPFA (USA)</p>
               </div>
-              <h3 className="text-3xl font-bold mb-4">Our Mission</h3>
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                To provide accessible, high-quality healthcare services that improve the well-being of our community. We
-                are dedicated to treating each patient with dignity, compassion, and respect while maintaining the
-                highest standards of medical excellence.
-              </p>
-            </Card>
-
-            <Card className="p-10 hover:shadow-2xl transition-all duration-300 border-2 hover:border-cyan-200">
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500 to-teal-500 flex items-center justify-center mb-6 shadow-lg">
-                <Eye className="w-7 h-7 text-white" />
+              <div className="p-4 bg-blue-50 rounded-lg">
+                <p className="font-semibold text-lg">Dr. S. Vijayapriya</p>
+                <p className="text-muted-foreground">BDS, FPFA (USA)</p>
               </div>
-              <h3 className="text-3xl font-bold mb-4">Our Vision</h3>
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                To be recognized as the leading healthcare provider in our region, known for clinical excellence,
-                innovative treatments, and compassionate care. We envision a healthier future where advanced medical
-                care is accessible to all who need it.
-              </p>
-            </Card>
+              <div className="p-4 bg-blue-50 rounded-lg">
+                <p className="font-semibold text-lg">Dr. J. Arunkumar</p>
+                <p className="text-muted-foreground">MDS (Oral & Maxillofacial Surgeon)</p>
+              </div>
+              <div className="p-4 bg-blue-50 rounded-lg">
+                <p className="font-semibold text-lg">Dr. G. Rajkumar</p>
+                <p className="text-muted-foreground">MDS (Prosthodontist)</p>
+              </div>
+              <div className="p-4 bg-blue-50 rounded-lg">
+                <p className="font-semibold text-lg">Dr. M. Jaikumar</p>
+                <p className="text-muted-foreground">MDS (Endodontist)</p>
+              </div>
+              <div className="p-4 bg-blue-50 rounded-lg">
+                <p className="font-semibold text-lg">Dr. Basil Mathews</p>
+                <p className="text-muted-foreground">MDS (Pedodontist)</p>
+              </div>
+              <div className="p-4 bg-blue-50 rounded-lg">
+                <p className="font-semibold text-lg">Dr. Anuradha</p>
+                <p className="text-muted-foreground">MDS (Endodontist)</p>
+              </div>
+              <div className="p-4 bg-blue-50 rounded-lg">
+                <p className="font-semibold text-lg">Dr. V. T. Arun Varghese</p>
+                <p className="text-muted-foreground">MDS (Periodontist)</p>
+              </div>
+              <div className="p-4 bg-blue-50 rounded-lg">
+                <p className="font-semibold text-lg">Dr. Shahid Basha</p>
+                <p className="text-muted-foreground">BDS (Implantologist)</p>
+              </div>
+              <div className="p-4 bg-blue-50 rounded-lg">
+                <p className="font-semibold text-lg">Dr. Dhanakoti</p>
+                <p className="text-muted-foreground">BDS</p>
+              </div>
+              <div className="p-4 bg-blue-50 rounded-lg">
+                <p className="font-semibold text-lg">Dr. Manjula</p>
+                <p className="text-muted-foreground">BDS</p>
+              </div>
+              <div className="p-4 bg-blue-50 rounded-lg">
+                <p className="font-semibold text-lg">Dr. Sri Hari</p>
+                <p className="text-muted-foreground">BDS</p>
+              </div>
+            </div>
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              Each doctor brings specialized expertise, ensuring accurate diagnosis, effective treatment, and excellent clinical outcomes.
+            </p>
           </div>
+
+          {/* Services */}
+          <div className="mb-20">
+            <h2 className="text-4xl font-bold mb-6">Comprehensive Dental Services</h2>
+            <p className="text-lg text-muted-foreground leading-relaxed mb-6">
+              As a true multi-specialty dental clinic, we offer a wide range of services including:
+            </p>
+            <div className="grid md:grid-cols-3 gap-4">
+              <div className="p-4 bg-cyan-50 rounded-lg">
+                <p className="font-semibold">General & Preventive Dentistry</p>
+              </div>
+              <div className="p-4 bg-cyan-50 rounded-lg">
+                <p className="font-semibold">Orthodontics (Braces & Aligners)</p>
+              </div>
+              <div className="p-4 bg-cyan-50 rounded-lg">
+                <p className="font-semibold">Root Canal Treatment</p>
+              </div>
+              <div className="p-4 bg-cyan-50 rounded-lg">
+                <p className="font-semibold">Dental Implants</p>
+              </div>
+              <div className="p-4 bg-cyan-50 rounded-lg">
+                <p className="font-semibold">Oral & Maxillofacial Surgery</p>
+              </div>
+              <div className="p-4 bg-cyan-50 rounded-lg">
+                <p className="font-semibold">Pediatric Dentistry</p>
+              </div>
+              <div className="p-4 bg-cyan-50 rounded-lg">
+                <p className="font-semibold">Periodontal (Gum) Care</p>
+              </div>
+              <div className="p-4 bg-cyan-50 rounded-lg">
+                <p className="font-semibold">Prosthodontics (Crowns, Bridges & Dentures)</p>
+              </div>
+              <div className="p-4 bg-cyan-50 rounded-lg">
+                <p className="font-semibold">Cosmetic & Smile Dentistry</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Why Choose Us */}
+          <div className="mb-20">
+            <h2 className="text-4xl font-bold mb-6">Why Choose Us?</h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <Card className="p-6">
+                <p className="font-semibold text-lg mb-2">Established since 1998</p>
+                <p className="text-muted-foreground">Decades of trust and experience</p>
+              </Card>
+              <Card className="p-6">
+                <p className="font-semibold text-lg mb-2">12 specialist doctors</p>
+                <p className="text-muted-foreground">Under one roof</p>
+              </Card>
+              <Card className="p-6">
+                <p className="font-semibold text-lg mb-2">Patient-friendly approach</p>
+                <p className="text-muted-foreground">Ethical treatment approach</p>
+              </Card>
+              <Card className="p-6">
+                <p className="font-semibold text-lg mb-2">Modern equipment</p>
+                <p className="text-muted-foreground">Advanced techniques</p>
+              </Card>
+              <Card className="p-6">
+                <p className="font-semibold text-lg mb-2">Convenient location</p>
+                <p className="text-muted-foreground">In Salem</p>
+              </Card>
+              <Card className="p-6">
+                <p className="font-semibold text-lg mb-2">Safe environment</p>
+                <p className="text-muted-foreground">Comfortable, hygienic, and safe</p>
+              </Card>
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -208,9 +201,9 @@ export default function AboutPage() {
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-cyan-300/10 rounded-full blur-3xl" />
 
         <div className="container mx-auto max-w-4xl text-center relative z-10">
-          <h2 className="text-5xl font-bold mb-6 text-balance">Experience Excellence in Healthcare</h2>
+          <h2 className="text-5xl font-bold mb-6 text-balance">Experience Excellence in Dental Care</h2>
           <p className="text-xl mb-10 opacity-90 max-w-2xl mx-auto leading-relaxed">
-            Join thousands of satisfied patients who trust ProHealth Hospital for their healthcare needs
+            Join thousands of satisfied patients who trust Sree Sarojaa Multi Specialty Dental Clinic for their dental care needs
           </p>
           <Button
             size="lg"

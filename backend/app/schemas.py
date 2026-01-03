@@ -63,15 +63,15 @@ class DoctorResponse(BaseModel):
     id: int
     name: str
     specialization: str
-    email: str
-    phone: Optional[str]
-    experience: Optional[int]
-    qualification: Optional[str]
-    consultationFee: Optional[float]
-    opdTimings: Optional[str]
-    languages: Optional[List[str]]
-    bio: Optional[str]
-    image: Optional[str]
+    email: Optional[str] = None  # Explicitly allow None
+    phone: Optional[str] = None
+    experience: Optional[int] = None
+    qualification: Optional[str] = None
+    consultationFee: Optional[float] = None
+    opdTimings: Optional[str] = None
+    languages: Optional[List[str]] = None
+    bio: Optional[str] = None
+    image: Optional[str] = None
     isActive: bool
     createdAt: Optional[datetime] = None
     

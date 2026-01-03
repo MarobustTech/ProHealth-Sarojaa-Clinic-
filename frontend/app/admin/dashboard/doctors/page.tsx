@@ -13,6 +13,7 @@ import { DoctorViewDialog } from "@/components/admin/doctor-view-dialog"
 import { Switch } from "@/components/ui/switch"
 import { useToast } from "@/hooks/use-toast"
 import { getAdminToken } from "@/lib/admin-auth"
+import { getApiBaseUrl } from "@/lib/get-api-url"
 
 interface Doctor {
   id?: number
@@ -73,14 +74,21 @@ export default function DoctorsPage() {
         return
       }
       
-      const apiUrl = `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/api/doctors/all`
+      // Use the centralized API URL getter
+      const baseUrl = getApiBaseUrl()
+      const apiUrl = `${baseUrl}/api/doctors/all`
       console.log("Fetching doctors from:", apiUrl)
+      console.log("Current hostname:", typeof window !== "undefined" ? window.location.hostname : "server-side")
       console.log("Token present:", !!token)
       
       const response = await fetch(apiUrl, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
+      }).catch((error) => {
+        console.error("Fetch error details:", error)
+        console.error("Attempted URL:", apiUrl)
+        throw new Error(`Network error: ${error.message}. Make sure the backend is running on ${baseUrl}`)
       })
       
       console.log("Doctors API response status:", response.status, response.statusText)
@@ -179,7 +187,7 @@ export default function DoctorsPage() {
         return
       }
       
-      const apiUrl = `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/api/doctors/${id}/toggle-active`
+      const apiUrl = `${getApiBaseUrl()}/api/doctors/${id}/toggle-active`
       console.log("Toggling doctor - ID:", id, "Type:", typeof id, "URL:", apiUrl)
       console.log("Token present:", !!token, "Token length:", token?.length)
       
@@ -252,7 +260,7 @@ export default function DoctorsPage() {
       }
       
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/api/doctors/${id}`,
+        `${getApiBaseUrl()}/api/doctors/${id}`,
         {
           method: "DELETE",
           headers: {
