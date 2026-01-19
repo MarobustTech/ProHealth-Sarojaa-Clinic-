@@ -31,18 +31,7 @@ import {
   type Specialization,
 } from "@/lib/api"
 
-const timeSlots = [
-  "9:00 AM",
-  "9:30 AM",
-  "10:00 AM",
-  "11:00 AM",
-  "11:30 AM",
-  "1:00 PM",
-  "1:30 PM",
-  "2:30 PM",
-  "3:30 PM",
-  "5:00 PM",
-]
+// Time slots are now fetched dynamically from API based on selected date
 
 const getDaysInMonth = (month: number, year: number) => {
   return new Date(year, month + 1, 0).getDate()
@@ -88,8 +77,12 @@ export default function BookAppointmentPage() {
     fullName: "",
     phone: "",
     email: "",
+    age: "",
+    gender: "",
   })
   const [bookingToken, setBookingToken] = useState<string | null>(null)
+  const [timeSlots, setTimeSlots] = useState<string[]>([])
+  const [isLoadingTimeSlots, setIsLoadingTimeSlots] = useState(false)
 
   useEffect(() => {
     const fetchSpecializations = async () => {
@@ -120,22 +113,91 @@ export default function BookAppointmentPage() {
   }, [searchParams, specializations])
 
   useEffect(() => {
-    if (selectedService && currentStep === 2) {
-      const fetchDoctors = async () => {
+    if (selectedService && currentStep === 1) {
+      const fetchAndSelectDoctor = async () => {
         setIsLoadingDoctors(true)
         try {
           const data = await getActiveDoctorsBySpecialization(selectedService)
           setDoctors(data)
+
+          if (data && data.length > 0) {
+            const doc = data[0]
+            setSelectedDoctor(doc.name)
+            setSelectedDoctorData(doc)
+            setCurrentStep(3)
+          } else {
+            setCurrentStep(2) // Fallback to show no doctors message
+          }
         } catch (error) {
           console.error("Error fetching doctors:", error)
-          // Optionally set an error state here
+          setCurrentStep(2)
         } finally {
           setIsLoadingDoctors(false)
         }
       }
-      fetchDoctors()
+      fetchAndSelectDoctor()
     }
   }, [selectedService, currentStep])
+
+  // Fetch time slots when date is selected
+  useEffect(() => {
+    const fetchTimeSlots = async () => {
+      if (!selectedDate || !selectedDoctorData) {
+        console.log('No date or doctor selected:', { selectedDate, selectedDoctorData })
+        setTimeSlots([])
+        return
+      }
+
+      setIsLoadingTimeSlots(true)
+      try {
+        // Construct date string using local time components to avoid timezone shifts
+        // (toISOString converts to UTC which can shift the date back by one day)
+        const year = selectedDate.getFullYear();
+        const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
+        const day = String(selectedDate.getDate()).padStart(2, '0');
+        const dateStr = `${year}-${month}-${day}`;
+
+        const doctorId = selectedDoctorData.id
+
+        console.log('Fetching time slots for:', { doctorId, dateStr, dayOfWeek: selectedDate.getDay() })
+
+        const response = await fetch(
+          `http://127.0.0.1:8000/api/bot/availability?doctor_id=${doctorId}&date=${dateStr}`
+        )
+
+        console.log('API Response status:', response.status)
+
+        if (response.ok) {
+          const data = await response.json()
+          console.log('API Response data:', data)
+
+          // Convert 24-hour format to 12-hour format with AM/PM
+          const formattedSlots = data
+            .filter((slot: any) => slot.available)
+            .map((slot: any) => {
+              const [hours, minutes] = slot.time.split(':')
+              const hour = parseInt(hours)
+              const period = hour >= 12 ? 'PM' : 'AM'
+              const displayHour = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour
+              return `${displayHour}:${minutes} ${period}`
+            })
+
+          console.log('Formatted slots:', formattedSlots)
+          setTimeSlots(formattedSlots)
+        } else {
+          console.error('API error:', response.status, response.statusText)
+          setTimeSlots([])
+        }
+      } catch (error) {
+        console.error('Error fetching time slots:', error)
+        setTimeSlots([])
+      } finally {
+        setIsLoadingTimeSlots(false)
+      }
+    }
+
+    fetchTimeSlots()
+  }, [selectedDate, selectedDoctorData])
 
   const handleNextStep = () => {
     if (currentStep < 5) setCurrentStep(currentStep + 1)
@@ -165,6 +227,8 @@ export default function BookAppointmentPage() {
         patient_name: patientInfo.fullName,
         phone: patientInfo.phone,
         email: patientInfo.email,
+        age: parseInt(patientInfo.age),
+        gender: patientInfo.gender,
         service: selectedService,
         doctor: selectedDoctor,
         appointment_datetime: appointmentDate.toISOString(),
@@ -184,10 +248,13 @@ export default function BookAppointmentPage() {
     if (currentStep === 3) return selectedDate !== null && selectedTime !== ""
     if (currentStep === 4) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      const age = parseInt(patientInfo.age)
       return (
         patientInfo.fullName.trim().length > 0 &&
         patientInfo.phone.trim().length >= 10 &&
-        emailRegex.test(patientInfo.email)
+        emailRegex.test(patientInfo.email) &&
+        !isNaN(age) && age >= 1 && age <= 120 &&
+        patientInfo.gender.trim().length > 0
       )
     }
     return false
@@ -276,7 +343,7 @@ export default function BookAppointmentPage() {
           </p>
           <div className="space-y-3">
             <Button className="w-full" size="lg" asChild>
-              <Link href={`https://t.me/TheMedixBot?start=apt_${bookingToken || ""}`} target="_blank">
+              <Link href={`https://t.me/Med_ad_bot?start=apt_${bookingToken || ""}`} target="_blank">
                 <MessageSquare className="w-5 h-5 mr-2" />
                 Continue on Chatbot (Token: {bookingToken})
               </Link>
@@ -298,7 +365,7 @@ export default function BookAppointmentPage() {
         <div className="container mx-auto max-w-5xl">
           <div className="mb-12">
             <div className="flex items-center justify-center gap-2 mb-4">
-              {[1, 2, 3, 4, 5].map((step) => (
+              {[1, 3, 4, 5].map((step) => (
                 <div key={step} className="flex items-center">
                   <div
                     className={cn(
@@ -318,7 +385,7 @@ export default function BookAppointmentPage() {
             </div>
             <div className="flex items-center justify-center gap-8 text-sm font-medium">
               <span className={cn(currentStep >= 1 ? "text-primary" : "text-muted-foreground")}>Service</span>
-              <span className={cn(currentStep >= 2 ? "text-primary" : "text-muted-foreground")}>Doctor</span>
+
               <span className={cn(currentStep >= 3 ? "text-primary" : "text-muted-foreground")}>Date & Time</span>
               <span className={cn(currentStep >= 4 ? "text-primary" : "text-muted-foreground")}>Your Details</span>
               <span className={cn(currentStep >= 5 ? "text-primary" : "text-muted-foreground")}>Confirm</span>
@@ -424,7 +491,7 @@ export default function BookAppointmentPage() {
                             <AvatarFallback className="bg-gradient-to-br from-blue-500 to-cyan-500 text-white text-xl font-bold">
                               {doctor.name
                                 .split(" ")
-                                .map((n) => n[0])
+                                .map((n: string) => n[0])
                                 .join("")}
                             </AvatarFallback>
                           </Avatar>
@@ -525,54 +592,81 @@ export default function BookAppointmentPage() {
                 {selectedDate && (
                   <div>
                     <h3 className="font-semibold mb-4 text-center">Available Times</h3>
-                    <div className="flex flex-wrap gap-3 justify-center">
-                      {(() => {
-                        const filtered = timeSlots.filter((time) => {
-                          const today = new Date()
-                          const isToday =
-                            selectedDate.getDate() === today.getDate() &&
-                            selectedDate.getMonth() === today.getMonth() &&
-                            selectedDate.getFullYear() === today.getFullYear()
+                    {isLoadingTimeSlots ? (
+                      <div className="flex items-center justify-center py-12">
+                        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+                      </div>
+                    ) : (
+                      <div className="flex flex-wrap gap-3 justify-center">
+                        {(() => {
+                          const filtered = timeSlots.filter((time) => {
+                            const today = new Date()
+                            const isToday =
+                              selectedDate.getDate() === today.getDate() &&
+                              selectedDate.getMonth() === today.getMonth() &&
+                              selectedDate.getFullYear() === today.getFullYear()
 
-                          if (!isToday) return true
+                            if (!isToday) return true
 
-                          const [t, period] = time.split(" ")
-                          let [hours, minutes] = t.split(":").map(Number)
-                          if (period === "PM" && hours !== 12) hours += 12
-                          if (period === "AM" && hours === 12) hours = 0
+                            const [t, period] = time.split(" ")
+                            let [hours, minutes] = t.split(":").map(Number)
+                            if (period === "PM" && hours !== 12) hours += 12
+                            if (period === "AM" && hours === 12) hours = 0
 
-                          const slotDate = new Date(selectedDate)
-                          slotDate.setHours(hours, minutes, 0, 0)
+                            const slotDate = new Date(selectedDate)
+                            slotDate.setHours(hours, minutes, 0, 0)
 
-                          return slotDate > today
-                        })
+                            return slotDate > today
+                          })
 
-                        if (filtered.length === 0) {
-                          return (
-                            <div className="text-center w-full py-6 text-muted-foreground bg-muted/30 rounded-lg">
-                              <p className="font-semibold text-orange-600">No slots available for today</p>
-                              <p className="text-sm mt-1">Please select another date</p>
-                            </div>
-                          )
-                        }
+                          // Check if it's Sunday
+                          const isSunday = selectedDate.getDay() === 0
 
-                        return filtered.map((time) => (
-                          <button
-                            key={time}
-                            type="button"
-                            onClick={() => setSelectedTime(time)}
-                            className={cn(
-                              "px-6 py-3 rounded-lg font-medium transition-all",
-                              selectedTime === time
-                                ? "bg-primary text-primary-foreground shadow-lg"
-                                : "bg-muted hover:bg-muted/80",
-                            )}
-                          >
-                            {time}
-                          </button>
-                        ))
-                      })()}
-                    </div>
+                          if (isSunday || timeSlots.length === 0) {
+                            return (
+                              <div className="text-center w-full py-6 text-muted-foreground bg-muted/30 rounded-lg">
+                                {isSunday ? (
+                                  <>
+                                    <p className="font-semibold text-red-600">🚫 Clinic Closed on Sunday</p>
+                                    <p className="text-sm mt-1">We're open Monday-Friday (8 AM - 8 PM) and Saturday (9 AM - 5 PM)</p>
+                                  </>
+                                ) : (
+                                  <>
+                                    <p className="font-semibold text-orange-600">No slots available for this date</p>
+                                    <p className="text-sm mt-1">Please select another date</p>
+                                  </>
+                                )}
+                              </div>
+                            )
+                          }
+
+                          if (filtered.length === 0) {
+                            return (
+                              <div className="text-center w-full py-6 text-muted-foreground bg-muted/30 rounded-lg">
+                                <p className="font-semibold text-orange-600">No slots available for today</p>
+                                <p className="text-sm mt-1">Please select another date</p>
+                              </div>
+                            )
+                          }
+
+                          return filtered.map((time) => (
+                            <button
+                              key={time}
+                              type="button"
+                              onClick={() => setSelectedTime(time)}
+                              className={cn(
+                                "px-6 py-3 rounded-lg font-medium transition-all",
+                                selectedTime === time
+                                  ? "bg-primary text-primary-foreground shadow-lg"
+                                  : "bg-muted hover:bg-muted/80",
+                              )}
+                            >
+                              {time}
+                            </button>
+                          ))
+                        })()}
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -618,6 +712,33 @@ export default function BookAppointmentPage() {
                       onChange={(e) => setPatientInfo({ ...patientInfo, email: e.target.value })}
                       className="h-12"
                     />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="age">Age *</Label>
+                    <Input
+                      id="age"
+                      type="number"
+                      placeholder="25"
+                      min="1"
+                      max="120"
+                      value={patientInfo.age}
+                      onChange={(e) => setPatientInfo({ ...patientInfo, age: e.target.value })}
+                      className="h-12"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="gender">Gender *</Label>
+                    <select
+                      id="gender"
+                      value={patientInfo.gender}
+                      onChange={(e) => setPatientInfo({ ...patientInfo, gender: e.target.value })}
+                      className="flex h-12 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                    >
+                      <option value="">Select gender</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Other">Other</option>
+                    </select>
                   </div>
                 </div>
               </div>

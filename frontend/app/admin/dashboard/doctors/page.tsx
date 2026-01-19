@@ -73,14 +73,14 @@ export default function DoctorsPage() {
         setLoading(false)
         return
       }
-      
+
       // Use the centralized API URL getter
       const baseUrl = getApiBaseUrl()
       const apiUrl = `${baseUrl}/api/doctors/all`
       console.log("Fetching doctors from:", apiUrl)
       console.log("Current hostname:", typeof window !== "undefined" ? window.location.hostname : "server-side")
       console.log("Token present:", !!token)
-      
+
       const response = await fetch(apiUrl, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -90,9 +90,9 @@ export default function DoctorsPage() {
         console.error("Attempted URL:", apiUrl)
         throw new Error(`Network error: ${error.message}. Make sure the backend is running on ${baseUrl}`)
       })
-      
+
       console.log("Doctors API response status:", response.status, response.statusText)
-      
+
       if (!response.ok) {
         const errorText = await response.text()
         console.error("Doctors API error response:", errorText)
@@ -109,13 +109,13 @@ export default function DoctorsPage() {
         }
         throw new Error(`Failed to fetch: ${response.status} - ${errorText}`)
       }
-      
+
       const data = await response.json()
       console.log("Doctors API response data:", data)
       console.log("Response type:", typeof data, "Is array:", Array.isArray(data))
       const doctorsArray = Array.isArray(data) ? data : []
       console.log("Doctors array length:", doctorsArray.length)
-      
+
       if (doctorsArray.length === 0) {
         console.warn("⚠️ No doctors returned from API!")
         console.warn("Full response:", JSON.stringify(data, null, 2))
@@ -123,7 +123,7 @@ export default function DoctorsPage() {
         console.log("✅ Successfully loaded", doctorsArray.length, "doctors")
         console.log("First doctor:", doctorsArray[0])
       }
-      
+
       setDoctors(doctorsArray)
       setFilteredDoctors(doctorsArray)
     } catch (error: any) {
@@ -151,7 +151,7 @@ export default function DoctorsPage() {
         })
         return
       }
-      
+
       // Ensure doctorId is a number (backend expects int)
       // Handle both id and _id formats
       let id: number
@@ -176,7 +176,7 @@ export default function DoctorsPage() {
       } else {
         id = doctorId
       }
-      
+
       if (isNaN(id) || id <= 0) {
         console.error("Invalid doctor ID:", doctorId, "Parsed as:", id)
         toast({
@@ -186,11 +186,11 @@ export default function DoctorsPage() {
         })
         return
       }
-      
+
       const apiUrl = `${getApiBaseUrl()}/api/doctors/${id}/toggle-active`
       console.log("Toggling doctor - ID:", id, "Type:", typeof id, "URL:", apiUrl)
       console.log("Token present:", !!token, "Token length:", token?.length)
-      
+
       const response = await fetch(apiUrl, {
         method: "PATCH",
         headers: {
@@ -198,7 +198,7 @@ export default function DoctorsPage() {
           "Content-Type": "application/json",
         },
       })
-      
+
       console.log("Toggle response status:", response.status, response.statusText)
 
       if (!response.ok) {
@@ -247,7 +247,7 @@ export default function DoctorsPage() {
         })
         return
       }
-      
+
       // Ensure doctorId is a number (backend expects int)
       const id = typeof doctorId === 'string' ? parseInt(doctorId, 10) : doctorId
       if (isNaN(id)) {
@@ -258,7 +258,7 @@ export default function DoctorsPage() {
         })
         return
       }
-      
+
       const response = await fetch(
         `${getApiBaseUrl()}/api/doctors/${id}`,
         {
@@ -352,33 +352,33 @@ export default function DoctorsPage() {
               {filteredDoctors.map((doctor) => (
                 <div
                   key={doctor.id || doctor._id || `doctor-${doctor.email}`}
-                  className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition-colors"
+                  className="flex flex-col md:flex-row items-start md:items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition-colors gap-4"
                 >
-                  <div className="flex items-center gap-4 flex-1">
-                    <Avatar className="h-12 w-12">
+                  <div className="flex items-center gap-4 w-full md:w-auto">
+                    <Avatar className="h-12 w-12 flex-shrink-0">
                       <AvatarImage src={doctor.profilePicture || "/placeholder.svg"} />
                       <AvatarFallback className="bg-blue-100 text-blue-600">{doctor.name.charAt(0)}</AvatarFallback>
                     </Avatar>
 
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <h3 className="font-semibold text-gray-900">{doctor.name}</h3>
-                        <Badge variant={doctor.isActive ? "default" : "secondary"}>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <h3 className="font-semibold text-gray-900 truncate">{doctor.name}</h3>
+                        <Badge variant={doctor.isActive ? "default" : "secondary"} className="shrink-0">
                           {doctor.isActive ? "Active" : "Inactive"}
                         </Badge>
                       </div>
-                      <p className="text-sm text-gray-600">{doctor.specialization}</p>
-                      <div className="flex items-center gap-4 mt-1 text-xs text-gray-500">
+                      <p className="text-sm text-gray-600 truncate">{doctor.specialization}</p>
+                      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-1 text-xs text-gray-500">
                         <span>{doctor.experience} years exp</span>
                         <span>₹{doctor.consultationFee}</span>
-                        <span>{doctor.email}</span>
+                        <span className="hidden sm:inline">{doctor.email}</span>
                       </div>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center justify-between w-full md:w-auto gap-4 mt-2 md:mt-0 border-t md:border-t-0 pt-3 md:pt-0">
                     <div className="flex items-center gap-2">
-                      <span className="text-sm text-gray-600">Active</span>
+                      <span className="text-sm text-gray-600 md:hidden">Status:</span>
                       <Switch
                         checked={doctor.isActive}
                         onCheckedChange={() => {
@@ -396,7 +396,7 @@ export default function DoctorsPage() {
                       />
                     </div>
 
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1">
                       <Button variant="ghost" size="icon" onClick={() => handleView(doctor)}>
                         <Eye className="h-4 w-4" />
                       </Button>

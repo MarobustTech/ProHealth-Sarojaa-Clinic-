@@ -44,8 +44,8 @@ export default function ContactPage() {
                   Call us during business hours for appointments and inquiries
                 </p>
                 <div className="space-y-2">
-                  <p className="text-xl font-bold text-primary">0427 2313339</p>
-                  <p className="text-xl font-bold text-primary">8946088182</p>
+                  <a href="tel:04272313339" className="block text-xl font-bold text-primary hover:underline">0427 2313339</a>
+                  <a href="tel:8946088182" className="block text-xl font-bold text-primary hover:underline">8946088182</a>
                 </div>
               </div>
             </Card>
@@ -115,7 +115,7 @@ export default function ContactPage() {
             </p>
             <div className="w-full h-96 rounded-xl overflow-hidden border-2 border-gray-200 shadow-inner">
               <iframe
-                src="https://www.google.com/maps?q=SREE+SAROJAA+MULTI+SPECIALTY+DENTAL+CLINIC,+Cherry+Road,+Kumaraswamypatti,+Salem,+Tamil+Nadu+636007&output=embed"
+                src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7814.827722298592!2d78.15452669209594!3d11.665054047525993!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3babf1bdea4ba923%3A0xe12f3582928377f5!2sSree%20Saroja%20multispecialty%20Detal%20Clinic!5e0!3m2!1sen!2sin!4v1767713024490!5m2!1sen!2sin"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
@@ -130,9 +130,9 @@ export default function ContactPage() {
                 <strong className="text-foreground">Getting Here:</strong> Located near Vincent Bus Stop on Cherry Road, Kumaraswamypatti, Salem. Easily accessible by public transport.
               </p>
               <p className="text-sm text-muted-foreground mt-2">
-                <a 
-                  href="https://maps.app.goo.gl/kSZG5kJjMN8XUCsR7" 
-                  target="_blank" 
+                <a
+                  href="https://maps.app.goo.gl/kSZG5kJjMN8XUCsR7"
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:underline"
                 >
@@ -162,7 +162,7 @@ export default function ContactPage() {
                 className="h-14 px-8 text-lg font-semibold shadow-xl hover:shadow-2xl hover:scale-105 transition-all"
                 asChild
               >
-                <Link href="https://t.me/TheMedixBot" target="_blank">
+                <Link href="https://t.me/Med_ad_bot" target="_blank">
                   <MessageSquare className="w-5 h-5 mr-2" />
                   Chat with Hospital Assistant
                 </Link>

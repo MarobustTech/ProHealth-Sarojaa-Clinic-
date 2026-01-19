@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Response
+from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from app.database import get_db
@@ -113,4 +114,92 @@ async def get_dashboard_stats(current_admin: Admin = Depends(get_current_admin),
         "success": True,
         "stats": stats
     }
+
+
+@router.get("/analytics")
+async def get_analytics_data(current_admin: Admin = Depends(get_current_admin), db: Session = Depends(get_db)):
+    """Get real-time analytics data for charts"""
+    from datetime import datetime, timedelta
+    from collections import defaultdict
+    
+    # Get all appointments
+    all_appointments = db.query(Appointment).all()
+    
+    # Monthly appointments (last 6 months)
+    monthly_data = defaultdict(int)
+    six_months_ago = datetime.now() - timedelta(days=180)
+    
+    for apt in all_appointments:
+        if apt.created_at:
+            # Handle timezone awareness for comparison
+            created_at = apt.created_at
+            if created_at.tzinfo is not None:
+                created_at = created_at.replace(tzinfo=None)
+                
+            if created_at >= six_months_ago:
+                month_key = created_at.strftime("%b")
+                monthly_data[month_key] += 1
+    
+    # Generate last 6 months
+    months = []
+    for i in range(5, -1, -1):
+        month_date = datetime.now() - timedelta(days=30*i)
+        month_name = month_date.strftime("%b")
+        months.append({
+            "month": month_name,
+            "appointments": monthly_data.get(month_name, 0)
+        })
+    
+    # Weekly appointments (last 7 days)
+    weekly_data = defaultdict(int)
+    seven_days_ago = datetime.now() - timedelta(days=7)
+    
+    for apt in all_appointments:
+        if apt.created_at:
+            # Handle timezone awareness for comparison
+            created_at = apt.created_at
+            if created_at.tzinfo is not None:
+                created_at = created_at.replace(tzinfo=None)
+                
+            if created_at >= seven_days_ago:
+                day_key = created_at.strftime("%a")
+                weekly_data[day_key] += 1
+    
+    # Generate last 7 days
+    days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    weekly_trend = []
+    for i in range(7):
+        day_date = datetime.now() - timedelta(days=6-i)
+        day_name = day_date.strftime("%a")
+        weekly_trend.append({
+            "day": day_name,
+            "patients": weekly_data.get(day_name, 0)
+        })
+    
+    # Doctor performance (top 5 by appointments)
+    doctor_stats = defaultdict(int)
+    for apt in all_appointments:
+        if apt.doctor_id:
+            doctor = db.query(Doctor).filter(Doctor.id == apt.doctor_id).first()
+            if doctor:
+                doctor_stats[doctor.name] += 1
+    
+    doctor_performance = [
+        {"doctor": name, "appointments": count}
+        for name, count in sorted(doctor_stats.items(), key=lambda x: x[1], reverse=True)[:5]
+    ]
+    
+    # Appointment status counts
+    cancelled_appointments = db.query(func.count(Appointment.id)).filter(Appointment.status == "cancelled").scalar() or 0
+    
+    return {
+        "success": True,
+        "analytics": {
+            "monthlyData": months,
+            "weeklyTrend": weekly_trend,
+            "doctorPerformance": doctor_performance,
+            "cancelledAppointments": cancelled_appointments
+        }
+    }
+
 

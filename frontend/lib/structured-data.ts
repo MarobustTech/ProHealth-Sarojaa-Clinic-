@@ -23,7 +23,7 @@ export function getOrganizationSchema(): OrganizationSchema {
     return {
         "@context": "https://schema.org",
         "@type": "MedicalBusiness",
-        name: "ProHealth Sarojaa Clinic",
+        name: "Sree Sarojaa Dental Clinic",
         url: "https://pro-health-sarojaa-clinic.vercel.app",
         logo: "https://pro-health-sarojaa-clinic.vercel.app/logo.png",
         description: "Professional healthcare services with experienced doctors and easy online appointment booking. Quality medical care with instant confirmation.",
@@ -41,7 +41,7 @@ export function getLocalBusinessSchema() {
     return {
         "@context": "https://schema.org",
         "@type": "MedicalClinic",
-        name: "ProHealth Sarojaa Clinic",
+        name: "Sree Sarojaa Dental Clinic",
         image: "https://pro-health-sarojaa-clinic.vercel.app/logo.png",
         "@id": "https://pro-health-sarojaa-clinic.vercel.app",
         url: "https://pro-health-sarojaa-clinic.vercel.app",
@@ -70,7 +70,7 @@ export function getWebSiteSchema() {
     return {
         "@context": "https://schema.org",
         "@type": "WebSite",
-        name: "ProHealth Sarojaa Clinic",
+        name: "Sree Sarojaa Dental Clinic",
         url: "https://pro-health-sarojaa-clinic.vercel.app",
         potentialAction: {
             "@type": "SearchAction",

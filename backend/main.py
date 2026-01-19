@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import engine, Base
-from app.routers import admin, doctors, specializations, appointments, patients, banners
+from app.routers import admin, doctors, specializations, appointments, patients, banners, settings, export, chat, bot
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -17,7 +17,10 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "https://pro-health-sarojaa-clinic.vercel.app",
-        "http://localhost:3000",  # For local development
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "http://localhost:8000",
+        "http://127.0.0.1:8000",
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -31,6 +34,10 @@ app.include_router(specializations.router, prefix="/api/specializations", tags=[
 app.include_router(appointments.router, prefix="/api/appointments", tags=["Appointments"])
 app.include_router(patients.router, prefix="/api/patients", tags=["Patients"])
 app.include_router(banners.router, prefix="/api/banners", tags=["Banners"])
+app.include_router(settings.router, tags=["Settings"])
+app.include_router(export.router, prefix="/api/admin/export", tags=["Export"])
+app.include_router(chat.router)
+app.include_router(bot.router)
 
 @app.get("/")
 async def root():

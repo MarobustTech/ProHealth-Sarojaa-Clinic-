@@ -24,12 +24,11 @@ export function AdminHeader() {
   }
 
   return (
-    <header className="bg-gradient-to-r from-white via-blue-50/30 to-cyan-50/30 border-b border-gray-200 px-6 py-4 flex items-center justify-between shadow-sm backdrop-blur-sm">
+    <header className="bg-gradient-to-r from-white via-blue-50/30 to-cyan-50/30 border-b border-gray-200 pl-16 md:px-6 py-4 flex items-center justify-between shadow-sm backdrop-blur-sm">
       <div className="flex-1">
         <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-600 via-cyan-500 to-teal-400 bg-clip-text text-transparent">
           Welcome back, {adminUser?.name || "Admin"}
         </h2>
-        <p className="text-sm text-gray-600 font-medium mt-1">Manage your hospital operations with ease</p>
       </div>
 
       <div className="flex items-center gap-3">

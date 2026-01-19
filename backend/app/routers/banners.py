@@ -12,8 +12,8 @@ def banner_to_response(banner: Banner) -> dict:
     return {
         "id": banner.id,
         "_id": str(banner.id),  # Support both id and _id for frontend compatibility
-        "title": banner.title,
-        "description": banner.description,
+        "title": banner.title or "",  # Handle NULL titles
+        "description": banner.description or "",
         "image": banner.image,
         "link": banner.link,
         "buttonText": banner.button_text or (banner.link and "Learn More" or None),  # Frontend compatibility

@@ -40,63 +40,20 @@ export function BannerCarousel({ banners }: { banners: Banner[] }) {
   }
 
   return (
-    <section className="relative h-[500px] bg-gradient-to-br from-blue-50 via-cyan-50 to-teal-50 overflow-hidden">
-      {/* Background decorative elements */}
-      <div className="absolute top-10 right-20 w-72 h-72 bg-blue-300/20 rounded-full blur-3xl animate-pulse" />
-      <div
-        className="absolute bottom-10 left-20 w-96 h-96 bg-cyan-300/20 rounded-full blur-3xl animate-pulse"
-        style={{ animationDelay: "1s" }}
-      />
-
-      {/* Banners */}
-      <div className="relative h-full">
+    <section className="relative w-full h-[250px] md:h-[500px] overflow-hidden">
+      {/* Banners - Full width images only */}
+      <div className="relative h-full w-full">
         {activeBanners.map((banner, index) => (
           <div
             key={banner._id || banner.id || `banner-${index}`}
-            className={`absolute inset-0 transition-opacity duration-1000 ${
-              index === currentIndex ? "opacity-100" : "opacity-0"
-            }`}
+            className={`absolute inset-0 transition-opacity duration-1000 ${index === currentIndex ? "opacity-100" : "opacity-0"
+              }`}
           >
-            <div className="container mx-auto max-w-7xl h-full px-6">
-              <div className="grid lg:grid-cols-2 gap-12 items-center h-full">
-                {/* Text Content */}
-                <div className="space-y-6 z-10">
-                  <h2 className="text-5xl lg:text-6xl font-bold text-balance leading-tight">
-                    {banner.title.split(" ").map((word, i) =>
-                      i % 3 === 1 ? (
-                        <span
-                          key={i}
-                          className="bg-gradient-to-r from-blue-600 via-cyan-500 to-teal-400 bg-clip-text text-transparent"
-                        >
-                          {word}{" "}
-                        </span>
-                      ) : (
-                        word + " "
-                      ),
-                    )}
-                  </h2>
-                  <p className="text-xl text-gray-600 text-pretty leading-relaxed">{banner.description}</p>
-                  {banner.buttonText && banner.buttonLink && (
-                    <Button
-                      size="lg"
-                      asChild
-                      className="bg-gradient-to-r from-blue-600 via-cyan-500 to-teal-400 hover:from-blue-700 hover:via-cyan-600 hover:to-teal-500 shadow-xl shadow-blue-500/30 hover:shadow-blue-500/50 text-base h-14 px-8 transition-all hover:scale-105"
-                    >
-                      <a href={banner.buttonLink}>{banner.buttonText}</a>
-                    </Button>
-                  )}
-                </div>
-
-                {/* Image */}
-                <div className="relative h-[400px] rounded-3xl overflow-hidden shadow-2xl shadow-blue-500/20">
-                  <img
-                    src={banner.image || "/placeholder.svg"}
-                    alt={banner.title}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              </div>
-            </div>
+            <img
+              src={banner.image || "/placeholder.svg"}
+              alt="Banner"
+              className="w-full h-full object-cover"
+            />
           </div>
         ))}
       </div>
@@ -127,9 +84,8 @@ export function BannerCarousel({ banners }: { banners: Banner[] }) {
               <button
                 key={index}
                 onClick={() => setCurrentIndex(index)}
-                className={`h-2 rounded-full transition-all ${
-                  index === currentIndex ? "w-8 bg-blue-600" : "w-2 bg-gray-400"
-                }`}
+                className={`h-2 rounded-full transition-all ${index === currentIndex ? "w-8 bg-white" : "w-2 bg-white/60"
+                  }`}
               />
             ))}
           </div>

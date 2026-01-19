@@ -1,12 +1,14 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { LayoutDashboard, Users, Stethoscope, Calendar, Settings, Activity, UserSquare2, ImageIcon } from "lucide-react"
+import { LayoutDashboard, Users, Stethoscope, Calendar, Settings, Activity, UserSquare2, ImageIcon, BarChart3 } from "lucide-react"
 
 const navigation = [
   { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard, color: "from-blue-600 to-cyan-500" },
+  { name: "Analytics", href: "/admin/dashboard/analytics", icon: BarChart3, color: "from-purple-600 to-pink-500" },
   { name: "Doctors", href: "/admin/dashboard/doctors", icon: Users, color: "from-teal-600 to-emerald-500" },
   { name: "Patients", href: "/admin/dashboard/patients", icon: UserSquare2, color: "from-indigo-600 to-blue-500" },
   {
@@ -29,15 +31,20 @@ export function AdminSidebar() {
   const pathname = usePathname()
 
   return (
-    <aside className="w-64 bg-gradient-to-b from-white via-blue-50/30 to-cyan-50/30 border-r border-gray-200 flex flex-col shadow-lg">
+    <aside className="w-full h-full min-h-screen bg-gradient-to-b from-white via-blue-50/30 to-cyan-50/30 flex flex-col shadow-lg">
       <div className="p-6 border-b border-gray-200 bg-white/80 backdrop-blur-sm">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 via-cyan-500 to-teal-400 flex items-center justify-center shadow-lg">
-            <Activity className="w-6 h-6 text-white" />
+          <div className="relative w-10 h-10 flex-shrink-0">
+            <Image
+              src="/logo.png"
+              alt="Sree Sarojaa Logo"
+              fill
+              className="object-contain"
+            />
           </div>
           <div>
             <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 via-cyan-500 to-teal-400 bg-clip-text text-transparent">
-              ProHealth
+              Sree Sarojaa
             </h1>
             <p className="text-xs text-gray-500 font-medium">Admin Dashboard</p>
           </div>
@@ -80,7 +87,7 @@ export function AdminSidebar() {
       <div className="p-4 border-t border-gray-200 bg-gradient-to-r from-blue-50 to-cyan-50">
         <div className="text-xs text-center text-gray-500">
           <p className="font-medium">v1.0.0</p>
-          <p className="mt-1">© 2025 ProHealth</p>
+          <p className="mt-1">© 2025 Sree Sarojaa</p>
         </div>
       </div>
     </aside>

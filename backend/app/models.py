@@ -50,6 +50,8 @@ class Appointment(Base):
     __tablename__ = "appointments"
     
     id = Column(Integer, primary_key=True, index=True)
+    telegram_id = Column(String(50), index=True, nullable=True)  # For bot bookings
+    patient_id = Column(Integer, ForeignKey("patients.id"), nullable=True)  # Link to Patient
     patient_name = Column(String(100), nullable=False)
     patient_email = Column(String(100), index=True)
     patient_phone = Column(String(20), nullable=False)
@@ -64,13 +66,15 @@ class Appointment(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     
     doctor = relationship("Doctor", back_populates="appointments")
+    patient = relationship("Patient", backref="appointments")
 
 class Patient(Base):
     __tablename__ = "patients"
     
     id = Column(Integer, primary_key=True, index=True)
+    telegram_id = Column(String(50), unique=True, index=True, nullable=True)  # For bot users
     name = Column(String(100), nullable=False)
-    email = Column(String(100), unique=True, index=True, nullable=False)
+    email = Column(String(100), unique=True, index=True, nullable=True)  # Made nullable for bot users
     phone = Column(String(20), unique=True, index=True, nullable=False)
     age = Column(Integer)
     gender = Column(String(20))
@@ -85,7 +89,7 @@ class Banner(Base):
     __tablename__ = "banners"
     
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String(200), nullable=False)
+    title = Column(String(200), nullable=True, default="")
     description = Column(Text)
     image = Column(String(500))
     link = Column(String(500))

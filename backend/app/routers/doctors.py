@@ -48,6 +48,31 @@ async def get_doctors(
             query = query.filter(Doctor.specialization == specialization)
         
         doctors = query.all()
+
+        # RESTRICT BOOKINGS TO PRIMARY DOCTORS (Kannan & Vijayapriya)
+        # If filtering by specialization (Booking flow), ensure only on-call doctors are returned.
+        if specialization:
+            primary_keywords = ["kannan", "vijayapriya"]
+            primary_matches = []
+            for d in doctors:
+                d_name_lower = d.name.lower()
+                if any(k in d_name_lower for k in primary_keywords):
+                    primary_matches.append(d)
+            
+            if primary_matches:
+                doctors = primary_matches
+            else:
+                # If no primary doctor matches explicitly, default to Dr. Vijayapriya
+                # This catches cases like visiting specialists (Endodontist, Implantologist etc.)
+                default_doc = db.query(Doctor).filter(
+                    Doctor.name.ilike("%Vijayapriya%"),
+                    Doctor.is_active == True
+                ).first()
+                if default_doc:
+                    doctors = [default_doc]
+                else:
+                    doctors = []
+
         result = [doctor_to_response(doc) for doc in doctors]
         return result
     except Exception as e:

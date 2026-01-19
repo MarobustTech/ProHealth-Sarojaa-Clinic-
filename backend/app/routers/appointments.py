@@ -110,17 +110,19 @@ async def create_appointment(
     
     # Create or update patient record
     patient = None
+    # Try to find existing patient by email or phone
     if patient_email:
         patient = db.query(Patient).filter(Patient.email == patient_email).first()
-        if not patient:
-            # Try to find by phone
-            patient = db.query(Patient).filter(Patient.phone == patient_phone).first()
     
-    if not patient and patient_email:
-        # Create new patient
+    if not patient and patient_phone:
+        # Try to find by phone
+        patient = db.query(Patient).filter(Patient.phone == patient_phone).first()
+    
+    if not patient:
+        # Create new patient (phone is required, email is optional)
         patient = Patient(
             name=patient_name,
-            email=patient_email,
+            email=patient_email if patient_email else None,
             phone=patient_phone,
             age=appointment_data.patientAge,
             gender=appointment_data.patientGender

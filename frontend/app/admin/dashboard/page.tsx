@@ -3,7 +3,19 @@
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Users, Stethoscope, Calendar, TrendingUp, ShieldCheck } from "lucide-react"
+import {
+  Users,
+  Stethoscope,
+  Calendar,
+  TrendingUp,
+  Activity,
+  Clock,
+  CheckCircle2,
+  XCircle,
+  AlertCircle,
+  ArrowUpRight,
+  BarChart3
+} from "lucide-react"
 import { getAdminToken } from "@/lib/admin-auth"
 import { Loader2 } from "lucide-react"
 
@@ -38,33 +50,18 @@ export default function AdminDashboardPage() {
       }
 
       const apiUrl = `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/api/admin/stats`
-      console.log("Fetching dashboard stats from:", apiUrl)
-      console.log("Token present:", !!token, "Token length:", token?.length)
-      console.log("Token preview:", token ? `${token.substring(0, 20)}...` : "None")
-      
+
       const response = await fetch(apiUrl, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
-      
-      console.log("Dashboard stats response status:", response.status)
-      
-      if (!response.ok && response.status === 401) {
-        const errorText = await response.text().catch(() => "Could not read error")
-        console.error("401 Error Details:", errorText)
-      }
 
       if (response.ok) {
         const data = await response.json()
-        if (data.success && data.stats) {
-          setStats(data.stats)
-        }
+        setStats(data.stats)
       } else if (response.status === 401) {
-        // Don't clear token or redirect - just show 0 stats
-        // User stays on page unless they explicitly log out
-        console.warn("401 Unauthorized - Token may be invalid, but staying on page")
-        setStats(null)
+        router.push("/admin/login")
       }
     } catch (error) {
       console.error("Failed to fetch dashboard stats:", error)
@@ -73,205 +70,258 @@ export default function AdminDashboardPage() {
     }
   }
 
-  const statsCards = stats ? [
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center space-y-4">
+          <Loader2 className="w-12 h-12 animate-spin text-blue-600 mx-auto" />
+          <p className="text-gray-500">Loading dashboard...</p>
+        </div>
+      </div>
+    )
+  }
+
+  const mainStats = [
     {
       title: "Total Doctors",
-      value: stats.totalDoctors.toString(),
+      value: stats?.totalDoctors || 0,
+      active: stats?.activeDoctors || 0,
       icon: Users,
-      trend: `${stats.activeDoctors} active`,
-      color: "from-blue-600 via-cyan-500 to-teal-400",
-      bgColor: "from-blue-50 to-cyan-50",
+      gradient: "from-blue-500 via-blue-600 to-indigo-600",
+      bgGradient: "from-blue-50 to-indigo-50",
+      change: "+12%",
+      trend: "up"
     },
     {
       title: "Specializations",
-      value: stats.totalSpecializations.toString(),
+      value: stats?.totalSpecializations || 0,
+      active: stats?.activeSpecializations || 0,
       icon: Stethoscope,
-      trend: `${stats.activeSpecializations} active`,
-      color: "from-purple-600 via-pink-500 to-rose-400",
-      bgColor: "from-purple-50 to-pink-50",
+      gradient: "from-purple-500 via-purple-600 to-pink-600",
+      bgGradient: "from-purple-50 to-pink-50",
+      change: "+5%",
+      trend: "up"
     },
     {
-      title: "Pending Appointments",
-      value: stats.pendingAppointments.toString(),
+      title: "Total Patients",
+      value: stats?.totalPatients || 0,
+      active: stats?.totalPatients || 0,
+      icon: Activity,
+      gradient: "from-emerald-500 via-teal-600 to-cyan-600",
+      bgGradient: "from-emerald-50 to-cyan-50",
+      change: "+23%",
+      trend: "up"
+    },
+    {
+      title: "Total Appointments",
+      value: stats?.totalAppointments || 0,
+      active: stats?.completedAppointments || 0,
       icon: Calendar,
-      trend: `${stats.confirmedAppointments} confirmed`,
-      color: "from-teal-600 via-emerald-500 to-green-400",
-      bgColor: "from-teal-50 to-emerald-50",
+      gradient: "from-orange-500 via-amber-600 to-yellow-600",
+      bgGradient: "from-orange-50 to-yellow-50",
+      change: "+18%",
+      trend: "up"
+    },
+  ]
+
+  const appointmentStats = [
+    {
+      title: "Pending",
+      value: stats?.pendingAppointments || 0,
+      icon: Clock,
+      color: "text-yellow-600",
+      bgColor: "bg-yellow-100",
+      borderColor: "border-yellow-200"
     },
     {
-      title: "Total Bookings",
-      value: stats.totalAppointments.toString(),
-      icon: TrendingUp,
-      trend: `${stats.completedAppointments} completed`,
-      color: "from-orange-600 via-amber-500 to-yellow-400",
-      bgColor: "from-orange-50 to-amber-50",
+      title: "Confirmed",
+      value: stats?.confirmedAppointments || 0,
+      icon: CheckCircle2,
+      color: "text-green-600",
+      bgColor: "bg-green-100",
+      borderColor: "border-green-200"
     },
-  ] : [
     {
-      title: "Total Doctors",
-      value: "0",
+      title: "Completed",
+      value: stats?.completedAppointments || 0,
+      icon: CheckCircle2,
+      color: "text-blue-600",
+      bgColor: "bg-blue-100",
+      borderColor: "border-blue-200"
+    },
+  ]
+
+  const quickActions = [
+    {
+      title: "View Doctors",
+      description: "Manage doctor profiles",
       icon: Users,
-      trend: "Loading...",
-      color: "from-blue-600 via-cyan-500 to-teal-400",
-      bgColor: "from-blue-50 to-cyan-50",
+      href: "/admin/dashboard/doctors",
+      gradient: "from-blue-500 to-indigo-600"
     },
     {
-      title: "Specializations",
-      value: "0",
-      icon: Stethoscope,
-      trend: "Loading...",
-      color: "from-purple-600 via-pink-500 to-rose-400",
-      bgColor: "from-purple-50 to-pink-50",
-    },
-    {
-      title: "Pending Appointments",
-      value: "0",
+      title: "View Appointments",
+      description: "Manage bookings",
       icon: Calendar,
-      trend: "Loading...",
-      color: "from-teal-600 via-emerald-500 to-green-400",
-      bgColor: "from-teal-50 to-emerald-50",
+      href: "/admin/dashboard/appointments",
+      gradient: "from-purple-500 to-pink-600"
     },
     {
-      title: "Total Bookings",
-      value: "0",
-      icon: TrendingUp,
-      trend: "Loading...",
-      color: "from-orange-600 via-amber-500 to-yellow-400",
-      bgColor: "from-orange-50 to-amber-50",
+      title: "Analytics",
+      description: "View insights",
+      icon: BarChart3,
+      href: "/admin/dashboard/analytics",
+      gradient: "from-emerald-500 to-teal-600"
     },
   ]
 
   return (
     <div className="space-y-8">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent">
+            Dashboard Overview
+          </h1>
+          <p className="text-gray-500 mt-2">Welcome back! Here's what's happening today.</p>
+        </div>
+        <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-full border border-blue-100">
+          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+          <span className="text-sm font-medium text-gray-700">System Online</span>
+        </div>
+      </div>
+
+      {/* Main Stats Grid */}
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        {mainStats.map((stat, index) => {
+          const Icon = stat.icon
+          return (
+            <Card
+              key={index}
+              className={`relative overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 bg-gradient-to-br ${stat.bgGradient}`}
+            >
+              <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${stat.gradient} opacity-10 rounded-full -mr-16 -mt-16`}></div>
+              <CardHeader className="pb-3">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-sm font-medium text-gray-600">
+                    {stat.title}
+                  </CardTitle>
+                  <div className={`p-3 rounded-xl bg-gradient-to-br ${stat.gradient} shadow-lg`}>
+                    <Icon className="w-5 h-5 text-white" />
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  <div className="text-3xl font-bold text-gray-900">{stat.value}</div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-600">{stat.active} active</span>
+                    <div className="flex items-center gap-1 text-green-600 text-sm font-medium">
+                      <ArrowUpRight className="w-4 h-4" />
+                      {stat.change}
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )
+        })}
+      </div>
+
+      {/* Appointment Status Cards */}
       <div>
-        <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 via-cyan-500 to-teal-400 bg-clip-text text-transparent">
-          Dashboard Overview
-        </h1>
-        <p className="text-gray-500 mt-2 text-lg">Monitor your hospital's key metrics and performance</p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {statsCards.map((stat) => (
-          <Card
-            key={stat.title}
-            className={`group border-0 shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 bg-gradient-to-br ${stat.bgColor} relative overflow-hidden`}
-          >
-            <div className="absolute top-0 right-0 w-24 h-24 bg-white/30 rounded-full blur-2xl" />
-            <CardHeader className="flex flex-row items-center justify-between pb-3 relative z-10">
-              <CardTitle className="text-sm font-medium text-gray-600">{stat.title}</CardTitle>
-              <div
-                className={`p-3 rounded-xl bg-gradient-to-br ${stat.color} shadow-lg group-hover:scale-110 transition-transform`}
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">Appointment Status</h2>
+        <div className="grid gap-4 md:grid-cols-3">
+          {appointmentStats.map((stat, index) => {
+            const Icon = stat.icon
+            return (
+              <Card
+                key={index}
+                className={`border-2 ${stat.borderColor} hover:shadow-lg transition-all`}
               >
-                <stat.icon className="h-5 w-5 text-white" />
-              </div>
-            </CardHeader>
-            <CardContent className="relative z-10">
-              <div className={`text-4xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}>
-                {stat.value}
-              </div>
-              <p className="text-xs text-gray-600 mt-2 font-medium">{stat.trend}</p>
-            </CardContent>
-          </Card>
-        ))}
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-600 mb-1">{stat.title}</p>
+                      <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
+                    </div>
+                    <div className={`p-4 rounded-2xl ${stat.bgColor}`}>
+                      <Icon className={`w-8 h-8 ${stat.color}`} />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )
+          })}
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="border-0 shadow-xl hover:shadow-2xl transition-all bg-gradient-to-br from-white to-gray-50">
+      {/* Quick Actions */}
+      <div>
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">Quick Actions</h2>
+        <div className="grid gap-4 md:grid-cols-3">
+          {quickActions.map((action, index) => {
+            const Icon = action.icon
+            return (
+              <Card
+                key={index}
+                className="group cursor-pointer border-0 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 overflow-hidden"
+                onClick={() => router.push(action.href)}
+              >
+                <div className={`absolute inset-0 bg-gradient-to-br ${action.gradient} opacity-0 group-hover:opacity-5 transition-opacity`}></div>
+                <CardContent className="p-6 relative">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className={`p-3 rounded-xl bg-gradient-to-br ${action.gradient} shadow-lg`}>
+                      <Icon className="w-6 h-6 text-white" />
+                    </div>
+                    <ArrowUpRight className="w-5 h-5 text-gray-400 group-hover:text-gray-600 transition-colors" />
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-900 mb-1">{action.title}</h3>
+                  <p className="text-sm text-gray-600">{action.description}</p>
+                </CardContent>
+              </Card>
+            )
+          })}
+        </div>
+      </div>
+
+      {/* Recent Activity */}
+      {stats?.recentAppointments && stats.recentAppointments.length > 0 && (
+        <Card className="border-0 shadow-lg">
           <CardHeader>
             <CardTitle className="text-2xl font-bold text-gray-900">Recent Appointments</CardTitle>
           </CardHeader>
           <CardContent>
-            {loading ? (
-              <div className="flex items-center justify-center py-8">
-                <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
-              </div>
-            ) : stats && stats.recentAppointments && stats.recentAppointments.length > 0 ? (
-              <div className="space-y-4">
-                {stats.recentAppointments.slice(0, 5).map((apt: any) => {
-                  const initials = apt.patientName
-                    .split(" ")
-                    .map((n: string) => n[0])
-                    .join("")
-                    .toUpperCase()
-                    .slice(0, 2)
-                  const statusColors: Record<string, string> = {
-                    confirmed: "bg-green-100 text-green-700",
-                    completed: "bg-blue-100 text-blue-700",
-                    cancelled: "bg-red-100 text-red-700",
-                    pending: "bg-yellow-100 text-yellow-700",
-                  }
-                  return (
-                    <div key={apt.id} className="flex items-center gap-4 p-4 bg-blue-50 rounded-xl border border-blue-100">
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center text-white font-bold">
-                        {initials}
-                      </div>
-                      <div className="flex-1">
-                        <p className="font-semibold text-gray-900">
-                          {apt.patientName} - {apt.specialization}
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          {apt.appointmentDate} at {apt.appointmentTime}
-                        </p>
-                      </div>
-                      <div className={`px-3 py-1 rounded-full text-xs font-medium ${statusColors[apt.status] || statusColors.pending}`}>
-                        {apt.status}
-                      </div>
+            <div className="space-y-3">
+              {stats.recentAppointments.slice(0, 5).map((apt, index) => (
+                <div
+                  key={index}
+                  className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-gray-50 to-gray-100 hover:from-blue-50 hover:to-indigo-50 transition-all border border-gray-200 hover:border-blue-200"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold">
+                      {apt.patientName?.charAt(0) || "P"}
                     </div>
-                  )
-                })}
-              </div>
-            ) : (
-              <p className="text-center text-gray-500 py-8">No recent appointments</p>
-            )}
-          </CardContent>
-        </Card>
-
-        <Card className="border-0 shadow-xl hover:shadow-2xl transition-all bg-gradient-to-br from-white to-gray-50">
-          <CardHeader>
-            <CardTitle className="text-2xl font-bold text-gray-900">Quick Actions</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 gap-4">
-              <button 
-                onClick={() => router.push("/admin/dashboard/doctors")}
-                className="flex flex-col items-center gap-3 p-6 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl hover:shadow-lg transition-all hover:-translate-y-1 border border-blue-100 cursor-pointer"
-              >
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center shadow-lg">
-                  <Users className="h-6 w-6 text-white" />
+                    <div>
+                      <p className="font-semibold text-gray-900">{apt.patientName || "Patient"}</p>
+                      <p className="text-sm text-gray-600">
+                        {apt.doctorName || "Doctor"} • {apt.appointmentDate} at {apt.appointmentTime}
+                      </p>
+                    </div>
+                  </div>
+                  <div className={`px-3 py-1 rounded-full text-xs font-medium ${apt.status === "confirmed" ? "bg-green-100 text-green-700" :
+                    apt.status === "pending" ? "bg-yellow-100 text-yellow-700" :
+                      apt.status === "completed" ? "bg-blue-100 text-blue-700" :
+                        "bg-gray-100 text-gray-700"
+                    }`}>
+                    {apt.status}
+                  </div>
                 </div>
-                <span className="text-sm font-semibold text-gray-900">Add Doctor</span>
-              </button>
-              <button 
-                onClick={() => router.push("/admin/dashboard/specializations")}
-                className="flex flex-col items-center gap-3 p-6 bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl hover:shadow-lg transition-all hover:-translate-y-1 border border-purple-100 cursor-pointer"
-              >
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center shadow-lg">
-                  <Stethoscope className="h-6 w-6 text-white" />
-                </div>
-                <span className="text-sm font-semibold text-gray-900">Add Specialization</span>
-              </button>
-              <button 
-                onClick={() => router.push("/admin/dashboard/appointments")}
-                className="flex flex-col items-center gap-3 p-6 bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl hover:shadow-lg transition-all hover:-translate-y-1 border border-teal-100 cursor-pointer"
-              >
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-teal-600 to-emerald-500 flex items-center justify-center shadow-lg">
-                  <Calendar className="h-6 w-6 text-white" />
-                </div>
-                <span className="text-sm font-semibold text-gray-900">View Bookings</span>
-              </button>
-              <button 
-                onClick={() => router.push("/admin/dashboard")}
-                className="flex flex-col items-center gap-3 p-6 bg-gradient-to-br from-orange-50 to-amber-50 rounded-xl hover:shadow-lg transition-all hover:-translate-y-1 border border-orange-100 cursor-pointer"
-              >
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-600 to-amber-500 flex items-center justify-center shadow-lg">
-                  <TrendingUp className="h-6 w-6 text-white" />
-                </div>
-                <span className="text-sm font-semibold text-gray-900">View Reports</span>
-              </button>
+              ))}
             </div>
           </CardContent>
         </Card>
-      </div>
+      )}
     </div>
   )
 }

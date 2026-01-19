@@ -192,7 +192,7 @@ export default async function HomePage() {
             <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-white backdrop-blur-sm rounded-full mb-6 shadow-lg shadow-blue-500/10 border border-blue-100">
               <Shield className="w-4 h-4 text-blue-600" />
               <span className="text-sm font-semibold bg-gradient-to-r from-blue-600 via-cyan-500 to-teal-400 bg-clip-text text-transparent">
-                Why Choose ProHealth
+                Why Choose Sree Sarojaa
               </span>
             </div>
             <h2 className="text-5xl font-bold mb-6 text-balance">

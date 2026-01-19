@@ -35,8 +35,8 @@ def patient_to_response(patient: Patient, db: Session) -> dict:
     return {
         "id": patient.id,
         "name": patient.name,
-        "email": patient.email,
-        "phone": patient.phone,
+        "email": patient.email or "",  # Return empty string if None
+        "phone": patient.phone or "",  # Return empty string if None
         "age": patient.age,
         "gender": patient.gender,
         "bloodGroup": patient.blood_group,

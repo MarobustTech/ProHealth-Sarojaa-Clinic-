@@ -169,7 +169,7 @@ class PatientResponse(BaseModel):
 
 # Banner Schemas
 class BannerCreate(BaseModel):
-    title: str
+    title: Optional[str] = ""
     description: Optional[str] = None
     image: Optional[str] = None
     link: Optional[str] = None
@@ -190,7 +190,7 @@ class BannerUpdate(BaseModel):
 
 class BannerResponse(BaseModel):
     id: int
-    title: str
+    title: Optional[str] = ""
     description: Optional[str]
     image: Optional[str]
     link: Optional[str]

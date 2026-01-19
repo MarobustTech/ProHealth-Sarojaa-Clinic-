@@ -1,5 +1,6 @@
 import Link from "next/link"
-import { Heart, Mail, Phone, MapPin } from "lucide-react"
+import Image from "next/image"
+import { Mail, Phone, MapPin } from "lucide-react"
 
 export function SiteFooter() {
   return (
@@ -8,15 +9,20 @@ export function SiteFooter() {
         <div className="grid md:grid-cols-4 gap-12">
           <div className="space-y-4">
             <Link href="/" className="flex items-center gap-3 group">
-              <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 via-cyan-500 to-teal-400 shadow-lg shadow-blue-500/30 group-hover:shadow-blue-500/50 transition-all">
-                <Heart className="w-6 h-6 text-white fill-white" />
+              <div className="relative w-12 h-12 group-hover:scale-105 transition-transform">
+                <Image
+                  src="/logo.png"
+                  alt="Sree Sarojaa Dental Clinic Logo"
+                  fill
+                  className="object-contain"
+                />
               </div>
               <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 via-cyan-500 to-teal-400 bg-clip-text text-transparent">
-                ProHealth
+                Sree Sarojaa
               </span>
             </Link>
             <p className="text-sm text-gray-600 leading-relaxed">
-              Providing quality dental care services with compassion and excellence since 2005.
+              Providing quality dental care services with compassion and excellence since 1998.
             </p>
           </div>
 
@@ -61,7 +67,11 @@ export function SiteFooter() {
               </li>
               <li className="flex items-center gap-2 text-gray-600">
                 <Phone className="w-4 h-4 text-blue-600 flex-shrink-0" />
-                <span>0427 2313339 / 8946088182</span>
+                <span>
+                  <a href="tel:04272313339" className="hover:text-blue-600 transition-colors">0427 2313339</a>
+                  {" / "}
+                  <a href="tel:8946088182" className="hover:text-blue-600 transition-colors">8946088182</a>
+                </span>
               </li>
               <li className="flex items-center gap-2 text-gray-600">
                 <Mail className="w-4 h-4 text-blue-600 flex-shrink-0" />
@@ -84,7 +94,7 @@ export function SiteFooter() {
           <p className="text-sm text-gray-600">
             &copy; 2025{" "}
             <span className="font-semibold bg-gradient-to-r from-blue-600 via-cyan-500 to-teal-400 bg-clip-text text-transparent">
-              ProHealth
+              Sree Sarojaa
             </span>{" "}
             Dental Clinic. All rights reserved.
           </p>
