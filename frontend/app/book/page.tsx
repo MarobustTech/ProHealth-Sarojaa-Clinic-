@@ -507,10 +507,7 @@ export default function BookAppointmentPage() {
                                 <GraduationCap className="w-4 h-4 text-primary" />
                                 <span>{doctor.qualification}</span>
                               </div>
-                              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                <DollarSign className="w-4 h-4 text-primary" />
-                                <span>Consultation: ${doctor.consultationFee || doctor.consultation_fee || "N/A"}</span>
-                              </div>
+
                               {(doctor.opdTimings || (doctor.opd_start_time && doctor.opd_end_time)) && (
                                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                                   <Clock className="w-4 h-4 text-primary" />

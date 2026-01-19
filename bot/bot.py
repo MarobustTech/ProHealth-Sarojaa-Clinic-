@@ -458,7 +458,7 @@ async def menu_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 f"🎓 *Qualification:* {d['qualification']}\n"
                 f"🏥 *Specialty:* {d['specialization']}\n"
                 f"⏳ *Experience:* {d['experience']}\n"
-                f"💰 *Consultation Fee:* ₹{d['fee']}\n"
+
                 f"{'─' * 35}\n"
                 f"📝 _{d.get('about', 'Experienced dental specialist')}_"
             )

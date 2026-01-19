@@ -46,10 +46,7 @@ export function DoctorViewDialog({ open, onOpenChange, doctor }: DoctorViewDialo
               <p className="text-sm text-gray-500">Experience</p>
               <p className="font-semibold">{doctor.experience} years</p>
             </div>
-            <div>
-              <p className="text-sm text-gray-500">Consultation Fee</p>
-              <p className="font-semibold">₹{doctor.consultationFee}</p>
-            </div>
+
             <div>
               <p className="text-sm text-gray-500">Email</p>
               <p className="font-semibold">{doctor.email}</p>

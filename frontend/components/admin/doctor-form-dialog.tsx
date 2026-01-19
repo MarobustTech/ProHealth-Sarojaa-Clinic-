@@ -32,7 +32,7 @@ export function DoctorFormDialog({ open, onOpenChange, doctor, onSuccess }: Doct
     specialization: "",
     experience: "",
     qualification: "",
-    consultationFee: "",
+
     opdTimings: "",
     language: "",
     bio: "",
@@ -52,7 +52,7 @@ export function DoctorFormDialog({ open, onOpenChange, doctor, onSuccess }: Doct
         specialization: doctor.specialization || "",
         experience: doctor.experience?.toString() || "",
         qualification: doctor.qualification || "",
-        consultationFee: doctor.consultationFee?.toString() || "",
+
         opdTimings: doctor.opdTimings || "",
         language: doctor.language?.join(", ") || "",
         bio: doctor.bio || "",
@@ -66,7 +66,7 @@ export function DoctorFormDialog({ open, onOpenChange, doctor, onSuccess }: Doct
         specialization: "",
         experience: "",
         qualification: "",
-        consultationFee: "",
+
         opdTimings: "",
         language: "",
         bio: "",
@@ -95,7 +95,7 @@ export function DoctorFormDialog({ open, onOpenChange, doctor, onSuccess }: Doct
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     // Validate required fields
     if (!formData.name.trim()) {
       toast({
@@ -105,7 +105,7 @@ export function DoctorFormDialog({ open, onOpenChange, doctor, onSuccess }: Doct
       })
       return
     }
-    
+
     if (!formData.specialization) {
       toast({
         title: "Validation Error",
@@ -114,7 +114,7 @@ export function DoctorFormDialog({ open, onOpenChange, doctor, onSuccess }: Doct
       })
       return
     }
-    
+
     if (!formData.qualification.trim()) {
       toast({
         title: "Validation Error",
@@ -123,7 +123,7 @@ export function DoctorFormDialog({ open, onOpenChange, doctor, onSuccess }: Doct
       })
       return
     }
-    
+
     setLoading(true)
 
     try {
@@ -135,10 +135,10 @@ export function DoctorFormDialog({ open, onOpenChange, doctor, onSuccess }: Doct
 
       // Parse numbers safely
       const experience = formData.experience ? parseInt(formData.experience, 10) : undefined
-      const consultationFee = formData.consultationFee ? parseFloat(formData.consultationFee) : undefined
-      
+
+
       // Handle languages - split by comma and trim
-      const languages = formData.language 
+      const languages = formData.language
         ? formData.language.split(",").map((l) => l.trim()).filter((l) => l.length > 0)
         : []
 
@@ -160,9 +160,7 @@ export function DoctorFormDialog({ open, onOpenChange, doctor, onSuccess }: Doct
       if (experience !== undefined && !isNaN(experience)) {
         payload.experience = experience
       }
-      if (consultationFee !== undefined && !isNaN(consultationFee)) {
-        payload.consultationFee = consultationFee
-      }
+
       if (formData.opdTimings) {
         payload.opdTimings = formData.opdTimings
       }
@@ -172,7 +170,7 @@ export function DoctorFormDialog({ open, onOpenChange, doctor, onSuccess }: Doct
       if (formData.profilePicture) {
         payload.profilePicture = formData.profilePicture
       }
-      
+
       // If editing, preserve isActive status
       if (doctor) {
         payload.isActive = doctor.isActive !== false
@@ -287,15 +285,7 @@ export function DoctorFormDialog({ open, onOpenChange, doctor, onSuccess }: Doct
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="consultationFee">Consultation Fee (₹)</Label>
-              <Input
-                id="consultationFee"
-                type="number"
-                value={formData.consultationFee}
-                onChange={(e) => setFormData({ ...formData, consultationFee: e.target.value })}
-              />
-            </div>
+
           </div>
 
           <div className="space-y-2">

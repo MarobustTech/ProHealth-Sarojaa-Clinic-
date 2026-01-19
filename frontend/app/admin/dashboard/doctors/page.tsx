@@ -370,7 +370,7 @@ export default function DoctorsPage() {
                       <p className="text-sm text-gray-600 truncate">{doctor.specialization}</p>
                       <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-1 text-xs text-gray-500">
                         <span>{doctor.experience} years exp</span>
-                        <span>₹{doctor.consultationFee}</span>
+
                         <span className="hidden sm:inline">{doctor.email}</span>
                       </div>
                     </div>
