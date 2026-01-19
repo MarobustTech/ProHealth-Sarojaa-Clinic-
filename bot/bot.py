@@ -17,7 +17,7 @@ from telegram.ext import (
 
 load_dotenv()
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-API_BASE = "http://127.0.0.1:8000"
+API_BASE = os.getenv("API_BASE", "http://127.0.0.1:8000")
 
 PDF_DIR = "receipts"
 os.makedirs(PDF_DIR, exist_ok=True)
