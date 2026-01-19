@@ -81,6 +81,7 @@ async def get_doctors_by_specialization(
             }
 
         # 2. Find all doctors matching the specialization
+        # 2. Find all doctors matching the specialization
         # First try exact match
         matches = db.query(Doctor).filter(
             Doctor.specialization == specialization,
@@ -94,28 +95,18 @@ async def get_doctors_by_specialization(
                 Doctor.is_active == True
             ).all()
 
-        # 3. Filter matches to ONLY include primary doctors
-        primary_matches = []
-        for d in matches:
-            d_name_lower = d.name.lower()
-            if any(k in d_name_lower for k in primary_keywords):
-                primary_matches.append(d)
-        
-        # 4. If we found a primary doctor for this specialization, return them
-        if primary_matches:
-            return [format_doc(d) for d in primary_matches]
+        if matches:
+            return [format_doc(d) for d in matches]
             
-        # 5. Fallback: If no primary doctor matches this specialization (e.g. visiting specialist field),
-        # Route to Dr. Vijayapriya (General/Primary) automatically.
-        default_doc = db.query(Doctor).filter(
-            Doctor.name.ilike("%Vijayapriya%"),
+        # 3. Fallback: If no doctor matches this specialization, return General Dentists
+        general_docs = db.query(Doctor).filter(
+            Doctor.specialization == "General Dentistry",
             Doctor.is_active == True
-        ).first()
+        ).all()
         
-        if default_doc:
-            return [format_doc(default_doc)]
+        if general_docs:
+            return [format_doc(d) for d in general_docs]
             
-        # Absolute fallback if even she is missing (should not happen)
         return []
 
     except Exception as e:
@@ -292,20 +283,20 @@ async def detect_specialization(data: dict):
     """Simple keyword-based specialization detection"""
     text = data.get("text", "").lower()
     
-    # Return doctor titles (ending in 'ist') to match database
+    # Return specialization names matching database
     if any(word in text for word in ["root", "canal", "filling", "nerve", "endodontic"]):
-        return {"specialization": "Endodontist"}
+        return {"specialization": "Endodontics"}
     elif any(word in text for word in ["brace", "align", "straighten", "crooked", "orthodontic"]):
-        return {"specialization": "Orthodontist"}
+        return {"specialization": "Orthodontics"}
     elif any(word in text for word in ["child", "kid", "pediatric", "baby", "pedodontic"]):
-        return {"specialization": "Pedodontist"}
+        return {"specialization": "Pediatric Dentistry"}
     elif any(word in text for word in ["crown", "bridge", "denture", "implant", "prosthodontic"]):
-        return {"specialization": "Prosthodontist"}
+        return {"specialization": "Prosthodontics"}
     elif any(word in text for word in ["gum", "bleeding", "periodontal"]):
-        return {"specialization": "Periodontist"}
-    elif any(word in text for word in ["clean", "whitening", "polish", "cosmetic", "veneer"]):
-        return {"specialization": "Cosmetic Dentistry"}
+        return {"specialization": "Periodontics"}
+    elif any(word in text for word in ["implant", "screw", "fixing"]):
+        return {"specialization": "Implantology"}
     elif any(word in text for word in ["surgery", "extraction", "wisdom", "oral surgeon"]):
-        return {"specialization": "Oral Maxillofacial Surgeon"}
+        return {"specialization": "Oral & Maxillofacial Surgery"}
     else:
         return {"specialization": "General Dentistry"}
