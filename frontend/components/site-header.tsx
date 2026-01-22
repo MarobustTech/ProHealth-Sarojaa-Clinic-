@@ -23,7 +23,7 @@ export function SiteHeader() {
             />
           </div>
           <span className="text-xl font-bold bg-gradient-to-r from-blue-600 via-cyan-500 to-teal-400 bg-clip-text text-transparent">
-            Sree Sarojaa
+            Sree Sarojaa Dental Clinic
           </span>
         </Link>
 
@@ -93,7 +93,7 @@ export function SiteHeader() {
                       className="object-contain"
                     />
                   </div>
-                  <span className="font-bold">Sree Sarojaa</span>
+                  <span className="font-bold">Sree Sarojaa Dental Clinic</span>
                 </Link>
                 <nav className="flex flex-col gap-4">
                   <Link href="/" className="text-lg font-medium hover:text-blue-600 transition-colors" onClick={() => setIsOpen(false)}>
