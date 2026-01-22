@@ -161,7 +161,9 @@ export default function BookAppointmentPage() {
 
         console.log('Fetching time slots for:', { doctorId, dateStr, dayOfWeek: selectedDate.getDay() })
 
+        const response = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000"}/api/bot/availability?doctor_id=${doctorId}&date=${dateStr}`
+        )
 
         console.log('API Response status:', response.status)
 
