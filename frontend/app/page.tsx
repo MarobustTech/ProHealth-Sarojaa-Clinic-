@@ -45,7 +45,7 @@ export default async function HomePage() {
         <BannerCarousel banners={banners} />
       </div>
 
-      <section className="py-24 px-6 bg-gradient-to-br from-blue-50 via-white to-cyan-50 relative overflow-hidden">
+      <section className="py-12 px-6 bg-gradient-to-br from-blue-50 via-white to-cyan-50 relative overflow-hidden">
         {/* Background decorative elements */}
         <div className="absolute top-20 right-10 w-96 h-96 bg-gradient-to-br from-blue-400/20 to-cyan-400/20 rounded-full blur-3xl animate-pulse" />
         <div
@@ -54,14 +54,9 @@ export default async function HomePage() {
         />
 
         <div className="container mx-auto max-w-7xl relative z-10">
-          <div className="grid lg:grid-cols-2 gap-20 items-center">
-            <div className="space-y-8">
-              <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/80 backdrop-blur-sm rounded-full border border-blue-200/50 shadow-lg shadow-blue-500/10">
-                <Sparkles className="w-4 h-4 text-blue-600" />
-                <span className="text-sm font-semibold bg-gradient-to-r from-blue-600 via-cyan-500 to-teal-400 bg-clip-text text-transparent">
-                  Trusted by 150K+ Patients
-                </span>
-              </div>
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-6">
+
 
               <h1 className="text-6xl lg:text-7xl font-bold tracking-tight text-balance leading-[1.1]">
                 Your Smile,{" "}
