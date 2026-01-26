@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { Switch } from "@/components/ui/switch"
 import { Search, Plus, Edit2, Trash2, ImageIcon } from "lucide-react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { BannerFormDialog } from "@/components/admin/banner-form-dialog"
 import { Label } from "@/components/ui/label"
 import { api } from "@/lib/api"
 import type { Banner } from "@/lib/types"
@@ -158,7 +159,10 @@ export default function BannersPage() {
           <p className="text-muted-foreground">Manage homepage banners and promotional content</p>
         </div>
         <Button
-          onClick={() => setIsAddDialogOpen(true)}
+          onClick={() => {
+            setSelectedBanner(null)
+            setIsAddDialogOpen(true)
+          }}
           className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700"
         >
           <Plus className="mr-2 h-4 w-4" />
@@ -245,7 +249,10 @@ export default function BannersPage() {
             <h3 className="mt-4 text-lg font-semibold">No banners found</h3>
             <p className="mt-2 text-sm text-muted-foreground">Create your first banner to get started</p>
             <Button
-              onClick={() => setIsAddDialogOpen(true)}
+              onClick={() => {
+                setSelectedBanner(null)
+                setIsAddDialogOpen(true)
+              }}
               className="mt-6 bg-gradient-to-r from-cyan-500 to-blue-600"
             >
               <Plus className="mr-2 h-4 w-4" />
@@ -255,74 +262,26 @@ export default function BannersPage() {
         </Card>
       )}
 
-      {/* Add Dialog */}
-      <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Add New Banner</DialogTitle>
-          </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <Label htmlFor="imageUrl">Banner Image URL *</Label>
-              <Input
-                id="imageUrl"
-                value={formData.imageUrl}
-                onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-                placeholder="https://example.com/banner.jpg"
-              />
-              <p className="text-xs text-muted-foreground">
-                Paste an image URL. Recommended size: 1920x600px
-              </p>
-            </div>
-            {formData.imageUrl && (
-              <div className="overflow-hidden rounded-lg border">
-                <img src={formData.imageUrl} alt="Preview" className="h-48 w-full object-cover" />
-              </div>
-            )}
-          </div>
-          <div className="flex justify-end gap-2">
-            <Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>
-              Cancel
-            </Button>
-            <Button onClick={handleAddBanner} className="bg-gradient-to-r from-cyan-500 to-blue-600">
-              Add Banner
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {/* Edit Dialog */}
-      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Edit Banner</DialogTitle>
-          </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <Label htmlFor="edit-imageUrl">Banner Image URL *</Label>
-              <Input
-                id="edit-imageUrl"
-                value={formData.imageUrl}
-                onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-                placeholder="https://example.com/banner.jpg"
-              />
-            </div>
-            {formData.imageUrl && (
-              <div className="overflow-hidden rounded-lg border">
-                <img src={formData.imageUrl} alt="Preview" className="h-48 w-full object-cover" />
-              </div>
-            )}
-          </div>
-          <div className="flex justify-end gap-2">
-            <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>
-              Cancel
-            </Button>
-            <Button onClick={handleEditBanner} className="bg-gradient-to-r from-cyan-500 to-blue-600">
-              Update Banner
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
+      {/* Add/Edit Dialog using the separate component */}
+      <BannerFormDialog
+        open={isAddDialogOpen || isEditDialogOpen}
+        onOpenChange={(open) => {
+          if (!open) {
+            setIsAddDialogOpen(false)
+            setIsEditDialogOpen(false)
+            setSelectedBanner(null)
+          }
+        }}
+        banner={selectedBanner}
+        onSuccess={() => {
+          loadBanners()
+          toast({
+            title: "Success",
+            description: selectedBanner ? "Banner updated successfully" : "Banner created successfully"
+          })
+        }}
+      />
     </div>
   )
 }
+```
