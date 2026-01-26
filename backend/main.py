@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import engine, Base
-from app.routers import admin, doctors, specializations, appointments, patients, banners, settings, export, chat, bot
+from app.routers import admin, doctors, specializations, appointments, patients, banners, settings, export, chat, bot, upload
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -32,6 +32,7 @@ app.include_router(settings.router, tags=["Settings"])
 app.include_router(export.router, prefix="/api/admin/export", tags=["Export"])
 app.include_router(chat.router)
 app.include_router(bot.router)
+app.include_router(upload.router, prefix="/api", tags=["Upload"])
 
 @app.get("/")
 async def root():

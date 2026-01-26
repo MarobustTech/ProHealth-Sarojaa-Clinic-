@@ -72,7 +72,7 @@ export function BannerFormDialog({ open, onOpenChange, banner, onSuccess }: Bann
       const url = bannerId
         ? `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/api/banners/${bannerId}`
         : `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/api/banners`
-      
+
       console.log("Saving banner:", bannerId ? "Edit" : "Create", "URL:", url)
 
       const response = await fetch(url, {
@@ -136,14 +136,53 @@ export function BannerFormDialog({ open, onOpenChange, banner, onSuccess }: Bann
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="image">Image URL *</Label>
-            <Input
-              id="image"
-              value={formData.image}
-              onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-              required
-              placeholder="/banner-image.jpg"
-            />
+            <Label htmlFor="image">Banner Image *</Label>
+            <div className="flex flex-col gap-4">
+              {/* Hidden URL input to maintain state */}
+              <Input
+                type="hidden"
+                id="image"
+                value={formData.image}
+                required
+              />
+
+              <Input
+                type="file"
+                accept="image/*"
+                onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+
+                  // Create form data
+                  const data = new FormData();
+                  data.append("file", file);
+
+                  setIsSubmitting(true);
+                  try {
+                    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/api/upload`, {
+                      method: "POST",
+                      body: data
+                    });
+
+                    if (!response.ok) throw new Error("Upload failed");
+
+                    const result = await response.json();
+                    setFormData({ ...formData, image: result.url });
+                  } catch (err) {
+                    alert("Failed to upload image");
+                    console.error(err);
+                  } finally {
+                    setIsSubmitting(false);
+                  }
+                }}
+              />
+
+              {formData.image && (
+                <div className="text-xs text-muted-foreground break-all">
+                  URL: {formData.image}
+                </div>
+              )}
+            </div>
             {formData.image && (
               <div className="mt-2 rounded-lg overflow-hidden border">
                 <img src={formData.image || "/placeholder.svg"} alt="Preview" className="w-full h-48 object-cover" />
