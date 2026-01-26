@@ -60,12 +60,13 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <Button asChild size="sm" variant="ghost" className="text-gray-600 hover:text-gray-900 hover:bg-gray-100 hidden md:inline-flex">
+          {/* Admin link hidden for production/client view */}
+          {/* <Button asChild size="sm" variant="ghost" className="text-gray-600 hover:text-gray-900 hover:bg-gray-100 hidden md:inline-flex">
             <Link href="/admin/login">
               <Shield className="w-4 h-4 mr-1.5" />
               Admin
             </Link>
-          </Button>
+          </Button> */}
           <Button
             asChild
             size="sm"
@@ -113,12 +114,12 @@ export function SiteHeader() {
                   <Button asChild className="w-full bg-gradient-to-r from-blue-600 via-cyan-500 to-teal-400" onClick={() => setIsOpen(false)}>
                     <Link href="/book">Book Appointment</Link>
                   </Button>
-                  <Button asChild variant="outline" className="w-full" onClick={() => setIsOpen(false)}>
+                  {/* <Button asChild variant="outline" className="w-full" onClick={() => setIsOpen(false)}>
                     <Link href="/admin/login">
                       <Shield className="w-4 h-4 mr-2" />
                       Admin Login
                     </Link>
-                  </Button>
+                  </Button> */}
                 </div>
               </div>
             </SheetContent>
